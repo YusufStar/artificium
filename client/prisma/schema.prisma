@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// basit user modeli - name, surname
+model User {
+  id             String        @id @default(cuid())
+  email          String        @unique @db.VarChar(255)
+  username       String        @unique @db.VarChar(255)
+  name           String?
+  surname        String?
+  profile_photo  String?
+  password       String        @db.VarChar(255)
+  emailVerified  Boolean       @default(false)
+  verifyToken    VerifyToken?  @relation(fields: [verifyTokenId], references: [id])
+  Organizatons   Organizatons? @relation(fields: [organizatonsId], references: [id])
+  organizatonsId String?
+  verifyTokenId  String?
+  Messages       Messages[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// kullanici email dogrulama tokeni
+model VerifyToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  expiredAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User      User[]
+}
+
+// kullanicilar Organizasyonlara katilabilir sadece 1 organizasyon secilebilir
+
+model Organizatons {
+  id            String     @id @default(cuid())
+  name          String     @unique @db.VarChar(255)
+  profile_photo String?
+  description   String?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  Users         User[]
+  Channels      Channels[]
+}
+
+// organizasyonlarin icerisinde kanallar var Channels organizasyona ait kanallar. ve bu kanallarda mesajlar atiyor kullanicilar.
+// kanallar sadece 1 organizasyona ait olabilir ve kanallarin isimleri ve aciklamalari var.
+// her kanal icerisinde Artificium - mesajlar, Chat - mesajlar olacak
+model Channels {
+  id             String       @id @default(cuid())
+  name           String       @unique @db.VarChar(255)
+  description    String?
+  organizatons   Organizatons @relation(fields: [organizatonsId], references: [id])
+  organizatonsId String
+  artificium     Messages[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// mesajlarin icerisinde kullanici id'si, kanal id'si, mesaj icerigi, mesajin gonderilme zamani var.
+model Messages {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  channelId String
+  channel   Channels @relation(fields: [channelId], references: [id])
+  content   String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
