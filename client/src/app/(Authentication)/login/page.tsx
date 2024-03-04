@@ -68,7 +68,7 @@ const LogIn = () => {
               />
 
               {formik.touched.email && formik.errors.email ? (
-                <span className="text-xs font-semibold text-red-500">
+                <span className="text-xs font-semibold text-red-500 mt-2">
                   {formik.errors.email}
                 </span>
               ) : null}
@@ -86,7 +86,7 @@ const LogIn = () => {
               />
 
               {formik.touched.password && formik.errors.password ? (
-                <span className="text-xs font-semibold text-red-500">
+                <span className="text-xs font-semibold text-red-500 mt-2">
                   {formik.errors.password}
                 </span>
               ) : null}
@@ -134,7 +134,7 @@ const LogIn = () => {
       <Image
         src="/static_images/abstract-01.png"
         alt="Login Abstract"
-        className="flex-[0.3] object-fill h-full rounded-l-24"
+        className="flex-1 object-fill h-full rounded-l-24"
         quality={100}
         width={2048}
         height={2048}

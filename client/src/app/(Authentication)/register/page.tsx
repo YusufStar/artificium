@@ -8,8 +8,14 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import Link from "next/link";
 import { Label } from "@/components/ui/label";
+import axios from "axios";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import { useRouter } from "next/navigation";
 
 const Register = () => {
+  const router = useRouter();
+  const [loading, setLoading] = React.useState(false);
+
   {
     /* First Name, Last Name, Passowrd, Repeat Password, Profile photo and Email - formik and yup use */
   }
@@ -37,7 +43,21 @@ const Register = () => {
   };
 
   const onSubmit = (values: any) => {
-    console.log(values);
+    setLoading(true);
+    axios
+      .post("/api/auth/register", {
+        ...values,
+      })
+      .then((res) => {
+        if (res.data?.action === "redirect") {
+          router.push(res.data?.url);
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   };
 
   const formik = useFormik({
@@ -90,7 +110,7 @@ const Register = () => {
                 />
 
                 {formik.touched.email && formik.errors.email ? (
-                  <span className="text-xs font-semibold text-red-500">
+                  <span className="text-xs font-semibold text-red-500 mt-2">
                     {formik.errors.email}
                   </span>
                 ) : null}
@@ -116,7 +136,7 @@ const Register = () => {
                   />
 
                   {formik.touched.firstName && formik.errors.firstName ? (
-                    <span className="text-xs font-semibold text-red-500">
+                    <span className="text-xs font-semibold text-red-500 mt-2">
                       {formik.errors.firstName}
                     </span>
                   ) : null}
@@ -141,7 +161,7 @@ const Register = () => {
                   />
 
                   {formik.touched.lastName && formik.errors.lastName ? (
-                    <span className="text-xs font-semibold text-red-500">
+                    <span className="text-xs font-semibold text-red-500 mt-2">
                       {formik.errors.lastName}
                     </span>
                   ) : null}
@@ -168,7 +188,7 @@ const Register = () => {
                   />
 
                   {formik.touched.password && formik.errors.password ? (
-                    <span className="text-xs font-semibold text-red-500">
+                    <span className="text-xs font-semibold text-red-500 mt-2">
                       {formik.errors.password}
                     </span>
                   ) : null}
@@ -194,7 +214,7 @@ const Register = () => {
 
                   {formik.touched.repeatPassword &&
                   formik.errors.repeatPassword ? (
-                    <span className="text-xs font-semibold text-red-500">
+                    <span className="text-xs font-semibold text-red-500 mt-2">
                       {formik.errors.repeatPassword}
                     </span>
                   ) : null}
@@ -213,6 +233,12 @@ const Register = () => {
                   onCheckedChange={(checked) => {
                     formik.setFieldValue("terms_and_conditions", checked);
                   }}
+                  className={`${
+                    formik.touched.terms_and_conditions &&
+                    formik.errors.terms_and_conditions
+                      ? "border-red-500"
+                      : "border-nobbleBlack-500"
+                  }`}
                 />
 
                 <Label
@@ -228,10 +254,18 @@ const Register = () => {
             </div>
 
             <Button
+              disabled={loading}
               type="submit"
               className="bg-stemGreen-500 hover:bg-stemGreen-500/80 font-semibold text-dayBlue-900"
             >
-              Create free account
+              {loading ? (
+                <>
+                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                  Please wait
+                </>
+              ) : (
+                "Create free account"
+              )}
             </Button>
           </form>
         </div>
@@ -250,7 +284,7 @@ const Register = () => {
       <Image
         src="/static_images/abstract-02.png"
         alt="Login Abstract"
-        className="flex-[0.3] object-fill h-full rounded-l-24"
+        className="flex-[0.5] object-fill h-full rounded-l-24"
         quality={100}
         width={2048}
         height={2048}
