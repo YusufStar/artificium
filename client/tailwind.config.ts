@@ -93,6 +93,8 @@ const config = {
       fontSize: {
         "36": "2.25rem",
         18: "1.125rem",
+        14: "0.875rem",
+        16: "1rem",
       },
       gap: {
         24: "1.5rem",

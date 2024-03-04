@@ -1,7 +1,7 @@
 "use client";
 import Icons from "@/icons";
 import Image from "next/image";
-import React, { useState } from "react";
+import React from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { Button } from "@/components/ui/button";
@@ -9,9 +9,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 
 const LogIn = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
   {
     /* Formik And Yup */
   }
@@ -36,17 +33,17 @@ const LogIn = () => {
   });
 
   return (
-    <div className="h-screen w-full flex">
+    <div className="h-screen overflow-hidden w-full flex">
       <div className="flex-1 flex flex-col justify-between items-center p-48">
         {/* Top bar */}
         <div className="h-fit w-full flex items-center">
           <Icons name="logo" />
         </div>
 
-        <div className="flex flex-col items-center w-[31.25rem]">
+        <div className="flex flex-col items-center w-[35rem]">
           <div className="flex flex-col gap-24 w-full items-start mb-[64px]">
             <h1 className="font-normal text-36 flex gap-1">
-              Let's
+              Let s
               <span className="font-bold from-[#4D62E5] via-[#87DDEE] bg-gradient-to-t inline-block to-[#B6F09C] text-transparent bg-clip-text">
                 creative!
               </span>
@@ -125,7 +122,10 @@ const LogIn = () => {
 
         <h1 className="font-semibold text-nobbleBlack-400 w-full flex gap-1">
           Don’t have an account?
-          <Link href={'/register'} className="from-[#82DBF7] bg-gradient-to-tr inline-block to-[#B6F09C] text-transparent bg-clip-text">
+          <Link
+            href={"/register"}
+            className="from-[#82DBF7] bg-gradient-to-tr inline-block to-[#B6F09C] text-transparent bg-clip-text"
+          >
             Sign Up
           </Link>
         </h1>
