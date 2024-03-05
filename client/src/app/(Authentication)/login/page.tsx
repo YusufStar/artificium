@@ -138,7 +138,7 @@ const LogIn = () => {
               </span>
             </div>
 
-            <Button className="bg-stemGreen-500 hover:bg-stemGreen-500/80 font-semibold text-dayBlue-900">
+            <Button>
               {loading ? (
                 <>
                   <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />

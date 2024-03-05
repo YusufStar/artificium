@@ -1,7 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import nodemailer from "nodemailer";
 import bcrypt from "bcrypt";
-import jwt from 'jsonwebtoken';
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
@@ -72,9 +71,27 @@ async function handler(req, res) {
         to: user.email,
         subject: "Verify your email",
         html: `
-          <p>Hello ${user.firstName},</p>
-          <p>Thank you for signing up to our platform. Please click the link below to verify your email address:</p>
-          <a href="${url}">Verify your email</a>
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Kullanıcı Doğrulama</title>
+        </head>
+        <body style="color: #CDCECF; font-family: Arial, sans-serif;">
+        
+        <div style="background-color: #363A3D; padding: 20px; border-radius: 10px; width: fit-content; margin: auto;">
+            <h2 style="color: #B6F09C; text-align: center; margin-bottom: 4px;">Kullanıcı Doğrulama</h2>
+            <p>Merhaba, ${user.firstName}</p>
+            <p>Kullanıcı doğrulama işlemi için lütfen aşağıdaki linke tıklayınız:</p>
+            <p><a href="${url}" style="color: #9B9C9E;">Doğrulama Linki</a></p>
+            
+            <p style="color: #9B9C9E;">Artificium.ai</p>
+            <p>İyi günler dileriz.</p>
+        </div>
+        
+        </body>
+        </html>
         `,
       });
 

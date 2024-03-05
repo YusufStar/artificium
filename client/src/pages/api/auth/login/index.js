@@ -81,7 +81,7 @@ async function handler(req, res) {
     return res.status(200).json({
       message: "Login successful",
       action: "redirect",
-      url: "/dashboard",
+      url: "/",
     });
   } else {
     res.status(405).json({ message: "Method not allowed" });
