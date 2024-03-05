@@ -7,8 +7,13 @@ import { useFormik } from "formik";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import axios from "axios";
 
 const LogIn = () => {
+  const router = useRouter();
+  const [loading, setLoading] = React.useState(false);
   {
     /* Formik And Yup */
   }
@@ -23,7 +28,21 @@ const LogIn = () => {
   };
 
   const onSubmit = (values: any) => {
-    console.log(values);
+    setLoading(true);
+    axios
+      .post("/api/auth/login", {
+        ...values,
+      })
+      .then((res) => {
+        if (res.data?.action === "redirect") {
+          router.push(res.data?.url);
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   };
 
   const formik = useFormik({
@@ -115,7 +134,14 @@ const LogIn = () => {
             </div>
 
             <Button className="bg-stemGreen-500 hover:bg-stemGreen-500/80 font-semibold text-dayBlue-900">
-              Log in
+              {loading ? (
+                <>
+                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                  Please wait
+                </>
+              ) : (
+                "Log in"
+              )}
             </Button>
           </form>
         </div>
