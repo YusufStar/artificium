@@ -34,13 +34,18 @@ const LogIn = () => {
         ...values,
       })
       .then((res) => {
+        if (res.data?.action === "error") {
+          res.data?.field?.map((field: any) => {
+            formik.setFieldError(field, res.data?.message);
+          });
+        }
+
         if (res.data?.action === "redirect") {
           router.push(res.data?.url);
         }
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
         setLoading(false);
       });
   };

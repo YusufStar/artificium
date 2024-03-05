@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 import { Inter as FontSans } from "next/font/google";
 
 import { cn } from "@/lib/utils";
+import AuthContainer from "@/components/AuthContainer";
 
 export const fontSans = FontSans({
   subsets: ["latin"],
@@ -22,7 +23,7 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        {children}
+        <AuthContainer>{children}</AuthContainer>
       </body>
     </html>
   );

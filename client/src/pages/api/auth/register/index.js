@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import nodemailer from "nodemailer";
 import bcrypt from "bcrypt";
+import jwt from 'jsonwebtoken';
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
@@ -15,13 +16,23 @@ const transporter = nodemailer.createTransport({
 async function handler(req, res) {
   if (req.method === "POST") {
     if (req.body?.password !== req.body?.repeatPassword) {
-      return res.status(400).json({ message: "Passwords do not match" });
+      return res
+        .status(201)
+        .json({
+          message: "Passwords do not match",
+          action: "error",
+          field: ["repeatPassword", "password"],
+        });
     }
 
     if (!req.body?.terms_and_conditions) {
       return res
-        .status(400)
-        .json({ message: "You must accept the terms and conditions" });
+        .status(201)
+        .json({
+          message: "You must accept the terms and conditions",
+          action: "error",
+          field: ["terms_and_conditions"],
+        });
     }
 
     const hashedPassword = await bcrypt.hash(req.body?.password, 10);
@@ -67,7 +78,13 @@ async function handler(req, res) {
         `,
       });
 
-      return res.status(200).json({ message: "User created successfully", action: 'redirect', url: '/login'});
+      return res
+        .status(200)
+        .json({
+          message: "User created successfully",
+          action: "redirect",
+          url: "/login",
+        });
     } catch (error) {
       return res.status(500).json({ message: error.message });
     }

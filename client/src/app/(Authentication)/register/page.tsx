@@ -49,13 +49,18 @@ const Register = () => {
         ...values,
       })
       .then((res) => {
+        if (res.data?.action === "error") {
+          res.data?.field?.map((field: any) => {
+            formik.setFieldError(field, res.data?.message);
+          });
+        }
+
         if (res.data?.action === "redirect") {
           router.push(res.data?.url);
         }
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
         setLoading(false);
       });
   };
@@ -222,7 +227,7 @@ const Register = () => {
               </div>
             </div>
 
-            <div className="my-[48px] flex items-center justify-between">
+            <div className="my-[48px] flex items-start flex-col justify-between">
               {/* Remember me Checkbox */}
               <div className="flex items-center gap-2">
                 <Checkbox
@@ -251,6 +256,13 @@ const Register = () => {
                   </span>
                 </Label>
               </div>
+
+              {formik.touched.terms_and_conditions &&
+              formik.errors.terms_and_conditions ? (
+                <span className="text-xs font-semibold text-red-500 mt-2">
+                  {formik.errors.terms_and_conditions}
+                </span>
+              ) : null}
             </div>
 
             <Button
