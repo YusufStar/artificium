@@ -70,7 +70,7 @@ async function handler(req, res) {
     };
 
     const token = jwt.sign(payload, process.env.JWT_KEY, {
-      expiresIn: 3600,
+      expiresIn: "30d",
     });
 
     res.setHeader(

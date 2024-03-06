@@ -7,7 +7,7 @@ export function middleware(req: NextRequest, event: NextFetchEvent) {
     .split("; ")
     .find((row) => row.startsWith("token="));
 
-  if (token) {
+  if (token && token.split("=")[1] && token.split("=")[1] !== "") {
     const tokenValue = token.split("=")[1];
     const decoded = jwt.verify(tokenValue, "k9vBAARKs53K3gD7itZPLmo3SmFHczEz");
 

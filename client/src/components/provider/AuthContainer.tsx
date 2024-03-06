@@ -11,9 +11,10 @@ const AuthContainer = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState<true | false>(true);
   const pathname = usePathname();
   const { replace } = useRouter();
-  const { user, login } = useAuthStore();
+  const { user, login, logout } = useAuthStore();
+  const router = useRouter();
 
-  useEffect(() => {
+  const getUser = async () => {
     const token = document.cookie
       .split("; ")
       .find((row) => row.startsWith("token="));
@@ -24,7 +25,12 @@ const AuthContainer = ({ children }: { children: React.ReactNode }) => {
           token: token.split("=")[1],
         })
         .then((res) => {
-          login(res.data);
+          if (res.data.action === "redirect") {
+            logout();
+            router.push(res.data.url);
+          } else {
+            login(res.data);
+          }
         })
         .catch((err) => {
           console.error(err);
@@ -39,7 +45,18 @@ const AuthContainer = ({ children }: { children: React.ReactNode }) => {
         replace("/login");
       }
     }
+  };
+
+  useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    getUser()
+
+    // 1 dakikada bir veriyi güncelle
+    const interval = setInterval(getUser, 60000);
+
+    // Temizlik işlemi
+    return () => clearInterval(interval);
   }, [pathname]);
 
   return (
