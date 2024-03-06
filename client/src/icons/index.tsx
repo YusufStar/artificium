@@ -7,14 +7,19 @@ type Props = {
   heigh?: number;
   color?: number;
   name: "logo";
+  className?: string;
 };
 
 const IconsData = {
   logo: Logo,
 };
 
-const Icons = ({ color, heigh, width, name }: Props) => {
-  return React.createElement(IconsData[name], { color, heigh, width });
+const Icons = ({ color, heigh, width, name, className }: Props) => {
+  const Icon = IconsData[name];
+
+  return (
+    <Icon color={color} heigh={heigh} width={width} className={className} />
+  );
 };
 
 export default Icons;

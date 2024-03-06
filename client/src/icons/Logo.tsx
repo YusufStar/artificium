@@ -4,10 +4,12 @@ const Logo = ({
   color,
   heigh,
   width,
+  className,
 }: {
   width?: number;
   heigh?: number;
   color?: number;
+  className?: string;
 }) => {
   return (
     <svg
@@ -15,6 +17,7 @@ const Logo = ({
       height={heigh || 34}
       viewBox="0 0 34 34"
       fill="none"
+      className={className}
       xmlns="http://www.w3.org/2000/svg"
     >
       <path

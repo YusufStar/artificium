@@ -43,3 +43,7 @@
 .blue-green-500-shadow:focus {
   box-shadow: 0px 0px 4px 0 rgb(130, 220, 247), 0 0px 8px 0px rgb(184, 240, 157);
 }
+
+.trans-width-200 {
+  transition: width 250ms !important;
+}

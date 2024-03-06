@@ -2,7 +2,7 @@ import "@/styles/globals.css";
 import { Inter as FontSans } from "next/font/google";
 
 import { cn } from "@/lib/utils";
-import AuthContainer from "@/components/AuthContainer";
+import AuthContainer from "@/components/provider/AuthContainer";
 
 export const fontSans = FontSans({
   subsets: ["latin"],

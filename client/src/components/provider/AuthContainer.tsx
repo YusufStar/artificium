@@ -5,9 +5,10 @@ import { usePathname } from "next/navigation";
 import useAuthStore from "@/zustand/useAuthStore";
 import { useRouter } from "next/navigation";
 import { Toaster } from "react-hot-toast";
+import LoadingContainer from "../ui/Loading";
 
 const AuthContainer = ({ children }: { children: React.ReactNode }) => {
-  const [loading, setLoading] = useState<"first" | true | false>("first");
+  const [loading, setLoading] = useState<true | false>(true);
   const pathname = usePathname();
   const { replace } = useRouter();
   const { user, login } = useAuthStore();
@@ -23,11 +24,9 @@ const AuthContainer = ({ children }: { children: React.ReactNode }) => {
           token: token.split("=")[1],
         })
         .then((res) => {
-          setLoading(false);
           login(res.data);
         })
         .catch((err) => {
-          setLoading(false);
           console.error(err);
         });
     } else {
@@ -39,7 +38,6 @@ const AuthContainer = ({ children }: { children: React.ReactNode }) => {
       ) {
         replace("/login");
       }
-      setLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
@@ -74,23 +72,9 @@ const AuthContainer = ({ children }: { children: React.ReactNode }) => {
           },
         }}
       />
-      {loading === "first" ? (
-        <div className="min-h-screen w-full flex items-center justify-center">
-          <div className="flex flex-col items-center">
-            <h1 className="text-4xl font-bold mb-8">Loading...</h1>
-          </div>
-        </div>
-      ) : (
-        children
-      )}
+      {loading ? <LoadingContainer setLoading={setLoading} /> : children}
     </>
   );
-
-  if (loading === "first") {
-    return;
-  } else {
-    return <>{children}</>;
-  }
 };
 
 export default AuthContainer;
