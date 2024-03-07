@@ -1,12 +1,12 @@
 import "@/styles/globals.css";
-import { Inter as FontSans } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 
 import { cn } from "@/lib/utils";
 import AuthContainer from "@/components/provider/AuthContainer";
 
-export const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
+export const fontSans = Plus_Jakarta_Sans({
+  subsets: ["latin", "latin-ext", "cyrillic-ext"],
+  display: "swap",
 });
 
 export default function RootLayout({
@@ -20,7 +20,7 @@ export default function RootLayout({
       <body
         className={cn(
           "min-h-screen bg-nobbleBlack-100 text-white font-sans antialiased",
-          fontSans.variable
+          fontSans.className
         )}
       >
         <AuthContainer>{children}</AuthContainer>

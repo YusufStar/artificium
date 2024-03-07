@@ -23,12 +23,13 @@ const config = {
           400: "#686B6E",
           500: "#363A3D",
           600: "#1A1D21",
+          800: "#0D0F10",
         },
         stemGreen: {
-          500: '#B6F09C'
+          500: "#B6F09C",
         },
         dayBlue: {
-          900: '#0C1132'
+          900: "#0C1132",
         },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -69,6 +70,7 @@ const config = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
         24: "1.5rem",
+        20: "1.25rem",
       },
       keyframes: {
         "accordion-down": {
@@ -84,20 +86,21 @@ const config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
-      fontFamily: {
-        sans: ["var(--font-sans)", ...fontFamily.sans],
-      },
       padding: {
+        24: "1.5rem",
         48: "3rem",
+        12: "0.75rem",
       },
       fontSize: {
         "36": "2.25rem",
         18: "1.125rem",
         14: "0.875rem",
         16: "1rem",
+        12: "0.75rem",
       },
       gap: {
         24: "1.5rem",
+        12: "0.75rem",
       },
     },
   },

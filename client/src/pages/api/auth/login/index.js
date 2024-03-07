@@ -38,6 +38,7 @@ async function handler(req, res) {
       });
     }
 
+    /*
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: process.env.SMTP_PORT,
@@ -54,7 +55,7 @@ async function handler(req, res) {
       subject: "Login Notification",
       text: `You have logged in at ${new Date().toLocaleString()}`,
     };
-
+    
     transporter.sendMail(mailData, (err, info) => {
       if (err) {
         console.log(err);
@@ -62,6 +63,7 @@ async function handler(req, res) {
         console.log(info);
       }
     });
+    */
 
     const payload = {
       id: user.id,
