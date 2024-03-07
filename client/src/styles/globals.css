@@ -29,6 +29,9 @@
 }
 
 @layer base {
+  * {
+    @apply border-border;
+  }
   body {
     @apply bg-background text-foreground text-[16px];
   }
@@ -36,7 +39,6 @@
 
 * {
   font-family: "Plus Jakarta Sans", sans-serif;
-  border-color: var(--border);
 }
 
 .blue-green-500-shadow {

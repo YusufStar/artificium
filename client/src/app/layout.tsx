@@ -1,6 +1,9 @@
 import "@/styles/globals.css";
 import AuthContainer from "@/components/provider/AuthContainer";
 
+import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from "@vercel/analytics/next"
+
 export default function RootLayout({
   children,
 }: {
@@ -12,6 +15,8 @@ export default function RootLayout({
       <body
         className="min-h-screen bg-nobbleBlack-100 text-white font-sans antialiased"
       >
+        <SpeedInsights />
+        <Analytics />
         <AuthContainer>{children}</AuthContainer>
       </body>
     </html>
