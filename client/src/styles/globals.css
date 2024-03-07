@@ -47,3 +47,11 @@
 .trans-width-200 {
   transition: width 250ms !important;
 }
+
+.glass-fill {
+  background: linear-gradient(
+    118deg,
+    rgba(215, 237, 237, 0.16) -47.79%,
+    rgba(204, 235, 235, 0) 100%
+  ) !important;
+}

@@ -71,6 +71,7 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
         24: "1.5rem",
         20: "1.25rem",
+        16: "1rem",
       },
       keyframes: {
         "accordion-down": {
