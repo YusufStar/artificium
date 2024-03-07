@@ -59,7 +59,7 @@ async function handler(req, res) {
         },
       });
 
-      const url = `${process.env.NEXT_PUBLIC_APP_URL}/verify-email?token=${verifyToken.token}`;
+      const url = `https://artificium-new.vercel.app/verify-email?token=${verifyToken.token}`;
 
       await prisma.user.update({
         where: { id: user.id },
