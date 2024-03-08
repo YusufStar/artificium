@@ -3,6 +3,7 @@ import useAuthStore from "@/zustand/useAuthStore";
 import { ChevronDown, CogIcon } from "lucide-react";
 import Image from "next/image";
 import React from "react";
+import EditProfileDialog from "../Auth/EditProfileDialog";
 
 type Props = {};
 
@@ -42,7 +43,7 @@ const Sidebar = (props: Props) => {
       </div>
 
       {/* Sidebar user info section */}
-      <div className="flex w-full h-fit p-24 mt-auto items-center gap-[1rem] glass-fill rounded-16">
+      <div className="flex w-full h-fit p-16 mt-auto items-center gap-[1rem] glass-fill rounded-16">
         <Image
           src="/static_images/Avatar.png"
           alt=""
@@ -59,18 +60,12 @@ const Sidebar = (props: Props) => {
           </span>
 
           {/* Organization member length */}
-          <span className="text-stemGreen-500 text-14 font-medium">
+          <span className="text-stemGreen-500 text-12 font-medium">
             Premium
           </span>
         </div>
 
-        <CogIcon
-          width={24}
-          height={24}
-          color="#686B6E"
-          className="ml-auto"
-          strokeWidth={1.5}
-        />
+        <EditProfileDialog />
       </div>
     </div>
   );

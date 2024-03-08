@@ -91,6 +91,7 @@ const config = {
         24: "1.5rem",
         48: "3rem",
         12: "0.75rem",
+        16: "1rem",
       },
       fontSize: {
         "36": "2.25rem",
