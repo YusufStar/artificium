@@ -12,10 +12,15 @@ import {
 import useAuthStore from "@/zustand/useAuthStore";
 import { ImageIcon } from "lucide-react";
 import React, { useState } from "react";
+import { createClient } from "@supabase/supabase-js";
 
 function UploadProfilePhoto() {
   const { user } = useAuthStore();
-  /* Drag and drop file uploader */
+  const supabase = createClient(
+    "https://slevyapzeslflvibhaub.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNsZXZ5YXB6ZXNsZmx2aWJoYXViIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwOTMwODk3NywiZXhwIjoyMDI0ODg0OTc3fQ.iSEd5hJ46VGKLHQxZRvK2qJ6HF_PlLujml1ivTgMoyA"
+  );
+
   const [dragging, setDragging] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -35,14 +40,50 @@ function UploadProfilePhoto() {
     setDragging(false);
   };
 
-  const fileDrop = (e: React.DragEvent<HTMLDivElement>) => {
+  const uploadFile = async (file: File) => {
+    const random_name = Math.random().toString(36).substring(7);
+    const upload = await supabase.storage
+      .from("avatars")
+      .upload(`${user.firstName}_${user.lastName}/${random_name}`, file);
+
+    /*
+      upload type
+      {
+        path: string:
+        id: string:
+        fullPath: string:
+    }
+      */
+
+    if (upload.error) {
+      setError(upload.error.message);
+      return;
+    }
+
+    await supabase
+      .from("User")
+      .update({
+        profilePhoto: `https://slevyapzeslflvibhaub.supabase.co/storage/v1/object/public/${upload.data.fullPath}`,
+      })
+      .eq("id", user.id);
+
+      location.reload()
+  };
+
+  const fileDrop = async (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const files = e.dataTransfer.files;
     if (files.length > 1) {
       setError("Only one image is allowed");
       return;
     }
-    setFile(files[0]);
+    if (files.length === 0) {
+      setError("No file is uploaded");
+      return;
+    }
+
+    await uploadFile(files[0]);
+
     setDragging(false);
   };
 
@@ -103,9 +144,10 @@ function UploadProfilePhoto() {
                 type="file"
                 id="fileInput"
                 className="hidden"
-                onChange={(e) => {
+                onChange={async (e) => {
                   if (e.target.files) {
-                    setFile(e.target.files[0]);
+                    const file = e.target.files[0];
+                    await uploadFile(file);
                   }
                 }}
               />

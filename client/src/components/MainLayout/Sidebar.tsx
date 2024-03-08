@@ -44,13 +44,10 @@ const Sidebar = (props: Props) => {
 
       {/* Sidebar user info section */}
       <div className="flex w-full h-fit p-16 mt-auto items-center gap-[1rem] glass-fill rounded-16">
-        <Image
-          src="/static_images/Avatar.png"
+        <img
+          src={user?.profilePhoto}
           alt=""
-          width={48}
-          height={48}
-          quality={100}
-          className="rounded-20"
+          className="w-[48px] h-[48px] object-cover rounded-20"
         />
 
         <div className="flex flex-col gap-[0.25rem]">
