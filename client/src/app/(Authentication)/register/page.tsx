@@ -293,14 +293,16 @@ const Register = () => {
         </div>
       </div>
 
-      <Image
-        src="/static_images/abstract-02.png"
-        alt="Login Abstract"
-        className="flex-[0.5] object-fill h-full rounded-l-24"
-        quality={100}
-        width={2048}
-        height={2048}
-      />
+      {/* just view desktop screen */}
+      <div className="flex-[0.75] relative hidden md:flex">
+        <Image
+          src="/static_images/abstract-02.png"
+          alt="Register Abstract"
+          className="rounded-l-24"
+          quality={100}
+          fill
+        />
+      </div>
     </div>
   );
 };

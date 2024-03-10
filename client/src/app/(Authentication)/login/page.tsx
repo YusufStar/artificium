@@ -162,14 +162,15 @@ const LogIn = () => {
         </h1>
       </div>
 
-      <Image
-        src="/static_images/abstract-01.png"
-        alt="Login Abstract"
-        className="flex-1 object-fill h-full rounded-l-24"
-        quality={100}
-        width={2048}
-        height={2048}
-      />
+      <div className="flex-1 relative hidden md:flex">
+        <Image
+          src="/static_images/abstract-01.png"
+          alt="Login Abstract"
+          className="rounded-l-24"
+          quality={100}
+          fill
+        />
+      </div>
     </div>
   );
 };

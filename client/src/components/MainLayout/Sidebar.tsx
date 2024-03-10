@@ -1,6 +1,6 @@
 "use client";
 import useAuthStore from "@/zustand/useAuthStore";
-import { ChevronDown, CogIcon } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import EditProfileDialog from "../Auth/EditProfileDialog";
@@ -28,7 +28,7 @@ const Sidebar = (props: Props) => {
           <span className="font-semibold">Intellisys</span>
 
           {/* Organization member length */}
-          <span className="text-stemGreen-500 text-14 font-medium">
+          <span className="text-stemGreen-500 text-12 font-medium">
             12 members
           </span>
         </div>
@@ -44,10 +44,13 @@ const Sidebar = (props: Props) => {
 
       {/* Sidebar user info section */}
       <div className="flex w-full h-fit p-16 mt-auto items-center gap-[1rem] glass-fill rounded-16">
-        <img
-          src={user?.profilePhoto}
-          alt=""
-          className="w-[48px] h-[48px] object-cover rounded-20"
+        <div
+          style={{
+            backgroundImage: `url(${user?.profilePhoto})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+          className="w-[48px] h-[48px] object-cover rounded-20 cursor-pointer"
         />
 
         <div className="flex flex-col gap-[0.25rem]">
