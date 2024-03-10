@@ -17,7 +17,8 @@ const config = {
       colors: {
         transparent: "transparent",
         nobbleBlack: {
-          100: "#131619",
+          100: "#E8E9E9",
+          700: "#131619",
           300: "#9B9C9E",
           200: "#CDCECF",
           400: "#686B6E",
@@ -31,6 +32,7 @@ const config = {
         dayBlue: {
           900: "#0C1132",
         },
+        glassStroke: "hsl(0,0,100,8%)",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -72,6 +74,7 @@ const config = {
         24: "1.5rem",
         20: "1.25rem",
         16: "1rem",
+        8: "0.5rem",
       },
       keyframes: {
         "accordion-down": {
@@ -92,6 +95,7 @@ const config = {
         48: "3rem",
         12: "0.75rem",
         16: "1rem",
+        14: "0.875rem",
       },
       fontSize: {
         "36": "2.25rem",
@@ -103,6 +107,7 @@ const config = {
       gap: {
         24: "1.5rem",
         12: "0.75rem",
+        16: "1rem",
       },
     },
   },

@@ -13,7 +13,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head />
       <body
-        className="h-screen overflow-hidden bg-nobbleBlack-100 text-white font-sans antialiased"
+        className="h-screen overflow-hidden bg-nobbleBlack-700 text-white font-sans antialiased"
       >
         <SpeedInsights />
         <Analytics />
