@@ -1,9 +1,10 @@
 "use client";
 import useAuthStore from "@/zustand/useAuthStore";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Search } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import EditProfileDialog from "../Auth/EditProfileDialog";
+import NavigationButton from "../ui/navigation-button";
 
 type Props = {};
 
@@ -42,8 +43,19 @@ const Sidebar = (props: Props) => {
         />
       </div>
 
+      <div className="py-24 px-2 flex flex-col gap-24 border-b border-[#131619]">
+        <span className="text-12 font-semibold text-nobbleBlack-400">
+          GENERAL
+        </span>
+
+        <div className="flex flex-col gap-2">
+        <NavigationButton path="/search" label="Search" icon={Search} />
+        <NavigationButton path="/billing" label="Billing" icon={Search} />
+        </div>
+      </div>
+
       {/* Sidebar user info section */}
-      <div className="flex w-full h-fit p-16 mt-auto items-center gap-[1rem] glass-fill rounded-16">
+      <div className="flex w-full h-fit p-16 mt-auto items-center gap-[1rem] glass-fill rounded-16 border-t border-glassStroke">
         <div
           style={{
             backgroundImage: `url(${user?.profilePhoto})`,
