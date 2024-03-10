@@ -188,10 +188,10 @@ function EditProfileDialog() {
             {/* firstName, lastName, email veya profilePhoto orjinal data yani user'daki hallerinden farkli ise disabled false */}
             <Button
               disabled={
-                firstName === user.firstName &&
-                lastName === user.lastName &&
-                email === user.email &&
-                profilePhoto === user.profilePhoto &&
+                firstName === user?.firstName &&
+                lastName === user?.lastName &&
+                email === user?.email &&
+                profilePhoto === user?.profilePhoto &&
                 !loading
               }
               onClick={async () => {
