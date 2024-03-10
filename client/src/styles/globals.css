@@ -60,3 +60,7 @@
     rgba(204, 235, 235, 0) 100%
   ) !important;
 }
+
+.drop-shadow-icon {
+  filter: drop-shadow(0px 2px 6px #686B6E);
+}
