@@ -1,15 +1,21 @@
 "use client";
 import useAuthStore from "@/zustand/useAuthStore";
-import { ChevronDown, Search } from "lucide-react";
+import { ChevronDown, Search, Square, Triangle } from "lucide-react";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import EditProfileDialog from "../Auth/EditProfileDialog";
 import NavigationButton from "../ui/navigation-button";
+import { useSearchParams } from "next/navigation";
 
 type Props = {};
 
 const Sidebar = (props: Props) => {
-  const { user } = useAuthStore();
+  const { user, pid, setPid } = useAuthStore();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    setPid(searchParams?.get("pid"));
+  }, [searchParams]);
 
   return (
     <div className="w-[19.5rem] h-full bg-nobbleBlack-800 rounded-20 flex flex-col p-[0.5rem]">
@@ -26,7 +32,7 @@ const Sidebar = (props: Props) => {
 
         <div className="flex flex-col gap-[0.25rem]">
           {/* Organization Name */}
-          <span className="font-semibold">Intellisys</span>
+          <span className="font-semibold text-14 2xl:text-16">Intellisys</span>
 
           {/* Organization member length */}
           <span className="text-stemGreen-500 text-12 font-medium">
@@ -49,8 +55,33 @@ const Sidebar = (props: Props) => {
         </span>
 
         <div className="flex flex-col gap-2">
-        <NavigationButton path="/search" label="Search" icon={Search} />
-        <NavigationButton path="/billing" label="Billing" icon={Search} />
+          <NavigationButton path="/search" label="Search" icon={Search} />
+          <NavigationButton path="/billing" label="Billing" icon={Search} />
+        </div>
+      </div>
+
+      <div className="py-24 px-2 flex flex-col gap-24 border-b border-[#131619]">
+        <span className="text-12 font-semibold text-nobbleBlack-400">
+          PROJECTS
+        </span>
+
+        <div className="flex flex-col gap-2">
+          <NavigationButton
+            secondary
+            path="/?pid=1"
+            label="Orbital Oddysey"
+            color="#B6F09C"
+            icon={Square}
+            active={pid === "1"}
+          />
+          <NavigationButton
+            secondary
+            path="/?pid=2"
+            label="Digital Product Launch"
+            color="#D0302F"
+            icon={Triangle}
+            active={pid === "2"}
+          />
         </div>
       </div>
 
@@ -65,7 +96,7 @@ const Sidebar = (props: Props) => {
           className="w-[48px] h-[48px] object-cover rounded-20 cursor-pointer"
         />
 
-        <div className="flex flex-col gap-[0.25rem]">
+        <div className="flex flex-col text-14 2xl:text-16 gap-[0.25rem]">
           {/* User Name */}
           <span className="font-semibold">
             {user?.firstName} {user?.lastName}

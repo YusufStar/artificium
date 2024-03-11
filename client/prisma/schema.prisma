@@ -15,14 +15,17 @@ datasource db {
 
 // basit user modeli - name, surname
 model User {
-  id                   String  @id @default(cuid())
-  firstName            String  @db.VarChar(255)
-  lastName             String  @db.VarChar(255)
-  email                String  @unique
-  password             String
-  profilePhoto         String?
-  emailVerified        Boolean @default(false)
-  verifyTokenId        String?
+  id            String  @id @default(cuid())
+  firstName     String  @db.VarChar(255)
+  lastName      String  @db.VarChar(255)
+  email         String  @unique
+  password      String
+  profilePhoto  String?
+  emailVerified Boolean @default(false)
+  verifyTokenId String?
+
+  Organization   Organization? @relation(fields: [organizationId], references: [id])
+  organizationId String?
 
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
@@ -38,4 +41,15 @@ model VerifyToken {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   User      User[]
+}
+
+model Organization {
+  id     String  @id @default(cuid())
+  name   String
+  avatar String?
+
+  members User[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
