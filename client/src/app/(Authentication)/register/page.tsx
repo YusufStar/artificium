@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import axios from "axios";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
+import { Input } from "@/components/ui/input";
 
 const Register = () => {
   const router = useRouter();
@@ -72,22 +73,22 @@ const Register = () => {
   });
 
   return (
-    <div className="h-screen overflow-hidden w-full flex">
-      <div className="flex-1 flex flex-col justify-between items-center p-48">
+    <div className="mobile-screen sm:h-screen overflow-hidden w-full flex">
+      <div className="flex-1 flex flex-col justify-between items-center p-36 sm:p-48">
         {/* Top bar */}
         <div className="h-fit w-full flex items-center justify-between">
           <Icons name="logo" />
 
           <Link
             href={"/login"}
-            className="from-[#82DBF7] bg-gradient-to-tr inline-block to-[#B6F09C] text-transparent bg-clip-text font-semibold text-16"
+            className="from-[#82DBF7] text-14 2xl:text-base bg-gradient-to-tr inline-block to-[#B6F09C] text-transparent bg-clip-text font-semibold"
           >
             Log In
           </Link>
         </div>
 
-        <div className="flex flex-col items-center w-[50rem]">
-          <h1 className="font-normal text-36">
+        <div className="flex flex-col items-center w-full max-w-screen-md">
+          <h1 className="font-normal text-30 2xl:text-36">
             Connect with your team and bring your creative ideas to life.
           </h1>
 
@@ -103,8 +104,7 @@ const Register = () => {
                 >
                   Email
                 </Label>
-                <input
-                  className="blue-green-500-shadow border border-nobbleBlack-500 focus:border-[#B6F09C] transition-all duration-300 outline-none rounded-[8px] py-3 px-4 bg-nobbleBlack-600 placeholder-nobbleBlack-300"
+                <Input
                   placeholder="Email"
                   type="email"
                   name="email"
@@ -129,8 +129,7 @@ const Register = () => {
                   >
                     First Name
                   </Label>
-                  <input
-                    className="blue-green-500-shadow border border-nobbleBlack-500 focus:border-[#B6F09C] transition-all duration-300 outline-none rounded-[8px] py-3 px-4 bg-nobbleBlack-600 placeholder-nobbleBlack-300"
+                  <Input
                     placeholder="First Name"
                     type="text"
                     name="firstName"
@@ -154,8 +153,7 @@ const Register = () => {
                   >
                     Last Name
                   </Label>
-                  <input
-                    className="blue-green-500-shadow border border-nobbleBlack-500 focus:border-[#B6F09C] transition-all duration-300 outline-none rounded-[8px] py-3 px-4 bg-nobbleBlack-600 placeholder-nobbleBlack-300"
+                  <Input
                     placeholder="Last Name"
                     type="text"
                     name="lastName"
@@ -181,8 +179,7 @@ const Register = () => {
                   >
                     Password
                   </Label>
-                  <input
-                    className="blue-green-500-shadow border border-nobbleBlack-500 focus:border-[#B6F09C] transition-all duration-300 outline-none rounded-[8px] py-3 px-4 bg-nobbleBlack-600 placeholder-nobbleBlack-300"
+                  <Input
                     placeholder="Password"
                     type="password"
                     name="password"
@@ -206,8 +203,7 @@ const Register = () => {
                   >
                     Repeat Password
                   </Label>
-                  <input
-                    className="blue-green-500-shadow border border-nobbleBlack-500 focus:border-[#B6F09C] transition-all duration-300 outline-none rounded-[8px] py-3 px-4 bg-nobbleBlack-600 placeholder-nobbleBlack-300"
+                  <Input
                     placeholder="Repeat Password"
                     type="password"
                     name="repeatPassword"
@@ -227,7 +223,7 @@ const Register = () => {
               </div>
             </div>
 
-            <div className="my-[48px] flex items-start flex-col justify-between">
+            <div className="my-[32px] 2xl:my-[48px] flex items-start flex-col justify-between">
               {/* Remember me Checkbox */}
               <div className="flex items-center gap-2">
                 <Checkbox
@@ -248,7 +244,7 @@ const Register = () => {
 
                 <Label
                   htmlFor="terms_and_conditions"
-                  className="text-nobbleBlack-300 text-16 font-medium"
+                  className="text-nobbleBlack-300 text-12 xl:text-base font-medium"
                 >
                   I agree to the{" "}
                   <span className="text-stemGreen-500 font-semibold">
@@ -282,7 +278,7 @@ const Register = () => {
           </form>
         </div>
 
-        <div className="h-fit w-full flex items-center justify-between">
+        <div className="h-fit w-full items-center justify-between flex">
           <h1 className="text-nobbleBlack-300 font-medium text-14">
             Artificium.app © 2024
           </h1>
@@ -294,7 +290,7 @@ const Register = () => {
       </div>
 
       {/* just view desktop screen */}
-      <div className="flex-[0.75] relative hidden md:flex">
+      <div className="flex-[0.75] relative hidden xl:flex">
         <Image
           src="/static_images/abstract-02.png"
           alt="Register Abstract"

@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import axios from "axios";
+import { Input } from "@/components/ui/input";
 
 const LogIn = () => {
   const router = useRouter();
@@ -57,23 +58,23 @@ const LogIn = () => {
   });
 
   return (
-    <div className="h-screen overflow-hidden w-full flex">
-      <div className="flex-1 flex flex-col justify-between items-center p-48">
+    <div className="mobile-screen sm:h-screen overflow-hidden w-full flex">
+      <div className="flex-1 flex flex-col justify-between items-center p-36 sm:p-48">
         {/* Top bar */}
         <div className="h-fit w-full flex items-center">
           <Icons name="logo" />
         </div>
 
-        <div className="flex flex-col items-center w-[35rem]">
-          <div className="flex flex-col gap-24 w-full items-start mb-[64px]">
-            <h1 className="font-normal text-36 flex gap-1">
+        <div className="flex flex-col items-center w-full max-w-screen-sm">
+          <div className="flex flex-col gap-24 w-full items-start mb-[48px] 2xl:mb-[64px]">
+            <h1 className="font-normal text-34 2xl:text-36 flex gap-1">
               Let s
               <span className="font-bold from-[#4D62E5] via-[#87DDEE] bg-gradient-to-t inline-block to-[#B6F09C] text-transparent bg-clip-text">
                 creative!
               </span>
             </h1>
 
-            <p className="text-nobbleBlack-300 font-medium text-18">
+            <p className="text-nobbleBlack-300 font-medium text-base 2xl:text-18">
               Log in to Artificium to start creating magic.
             </p>
           </div>
@@ -81,8 +82,7 @@ const LogIn = () => {
           {/* FORM (formik and yup) email and password login*/}
           <form onSubmit={formik.handleSubmit} className="flex flex-col w-full">
             <div className="flex flex-col gap-2 mb-[24px] w-full">
-              <input
-                className="blue-green-500-shadow border border-nobbleBlack-500 focus:border-[#B6F09C] transition-all duration-300 outline-none rounded-[8px] py-3 px-4 bg-nobbleBlack-600 placeholder-nobbleBlack-300"
+              <Input
                 placeholder="Email"
                 type="email"
                 name="email"
@@ -90,7 +90,6 @@ const LogIn = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
-
               {formik.touched.email && formik.errors.email ? (
                 <span className="text-xs font-semibold text-red-500 mt-2">
                   {formik.errors.email}
@@ -99,8 +98,7 @@ const LogIn = () => {
             </div>
 
             <div className="flex flex-col gap-2 w-full">
-              <input
-                className="blue-green-500-shadow border border-nobbleBlack-500 focus:border-[#B6F09C] transition-all duration-300 outline-none rounded-[8px] py-3 px-4 bg-nobbleBlack-600 placeholder-nobbleBlack-300"
+              <Input
                 placeholder="Password"
                 type="password"
                 name="password"
@@ -116,7 +114,7 @@ const LogIn = () => {
               ) : null}
             </div>
 
-            <div className="my-[48px] flex items-center justify-between">
+            <div className="my-[32px] 2xl:my-[48px] flex items-center justify-between">
               {/* Remember me Checkbox */}
               <div className="flex items-center gap-2">
                 <Checkbox
@@ -126,14 +124,14 @@ const LogIn = () => {
 
                 <label
                   htmlFor="remember"
-                  className="text-nobbleBlack-200 font-medium"
+                  className="text-nobbleBlack-200 text-14 2xl:text-base font-medium"
                 >
                   Remember me
                 </label>
               </div>
 
               {/* Forgot password linear gradient colored text */}
-              <span className="font-bold from-[#82DBF7] bg-gradient-to-tr inline-block to-[#B6F09C] text-transparent bg-clip-text">
+              <span className="font-bold from-[#82DBF7] bg-gradient-to-tr text-14 2xl:text-base inline-block to-[#B6F09C] text-transparent bg-clip-text">
                 Forgot Password?
               </span>
             </div>
@@ -151,18 +149,18 @@ const LogIn = () => {
           </form>
         </div>
 
-        <h1 className="font-semibold text-nobbleBlack-400 w-full flex gap-1">
+        <h1 className="font-semibold text-nobbleBlack-400 text-14 2xl:text-base w-full overflow-hidden">
           Don’t have an account?
           <Link
             href={"/register"}
-            className="from-[#82DBF7] bg-gradient-to-tr inline-block to-[#B6F09C] text-transparent bg-clip-text"
+            className="from-[#82DBF7] bg-gradient-to-tr inline-block to-[#B6F09C] text-transparent bg-clip-text ml-1"
           >
             Sign Up
           </Link>
         </h1>
       </div>
 
-      <div className="flex-1 relative hidden md:flex">
+      <div className="flex-1 relative hidden xl:flex">
         <Image
           src="/static_images/abstract-01.png"
           alt="Login Abstract"
