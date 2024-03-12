@@ -10,7 +10,7 @@ const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   const { socket, setSocket, pid } = useChatStore();
 
   useEffect(() => {
-    const socket: Socket = io(process.env.NEXT_PUBLIC_SOCKET as string);
+    const socket: Socket = io(process.env.NEXT_PUBLIC_SOCKET_URL as string);
     setSocket(socket);
 
     return () => {
