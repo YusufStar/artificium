@@ -1,5 +1,6 @@
 "use client";
 import useAuthStore from "@/zustand/useAuthStore";
+import useChatStore from "@/zustand/useChatStore";
 import { ChevronDown, Search, Square, Triangle } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect } from "react";
@@ -7,10 +8,9 @@ import EditProfileDialog from "../Auth/EditProfileDialog";
 import NavigationButton from "../ui/navigation-button";
 import { useSearchParams } from "next/navigation";
 
-type Props = {};
-
-const Sidebar = (props: Props) => {
-  const { user, pid, setPid } = useAuthStore();
+const Sidebar = () => {
+  const { user } = useAuthStore();
+  const { pid, setPid } = useChatStore();
   const searchParams = useSearchParams();
 
   useEffect(() => {

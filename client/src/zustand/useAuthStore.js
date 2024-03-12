@@ -2,8 +2,8 @@ import { create } from "zustand";
 
 const useAuthStore = create((set) => ({
   user: null,
-  pid: null,
-  setPid: (pid) => set({ pid }),
+  supabase: null,
+  setSupabase: (supabase) => set({ supabase }),
   login: (user) => set({ user }),
   logout: () => set({ user: null }),
 }));

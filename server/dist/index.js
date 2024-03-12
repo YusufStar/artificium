@@ -3,20 +3,38 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// Import necessary modules and types
 const express_1 = __importDefault(require("express"));
+const http_1 = __importDefault(require("http"));
+const socket_io_1 = require("socket.io");
 const dotenv_1 = require("dotenv");
-// Create an Express application
 const app = (0, express_1.default)();
+const server = http_1.default.createServer(app); // Express uygulamanızı HTTP sunucusuna dönüştürün
+const io = new socket_io_1.Server(server, {
+    cors: {
+        origin: "*",
+    },
+}); // Socket.IO sunucusunu oluşturun
 (0, dotenv_1.config)();
-// Configure middleware for parsing JSON and URL-encoded data
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
-app.get('/', (_, res) => {
-    res.send('Welcome to the artificium api.');
+app.get("/", (_, res) => {
+    res.send("Welcome to the artificium api.");
+});
+// Socket.IO bağlantılarını dinleyin
+io.on("connection", (socket) => {
+    console.log("a user connected id: " + socket.id);
+    // Kullanıcı bağlantısını kesin
+    socket.on("disconnect", () => {
+        console.log("user disconnected id: " + socket.id);
+    });
+    // Kullanıcınin bir odaya katilmasi icin socket olustur
+    socket.on("join-room", (roomId, userId) => {
+        socket.join(roomId);
+        console.log("a user joined room: " + roomId + " user id: " + userId);
+    });
 });
 // Set up the Express application to listen on port 3000
-const PORT = process.env.PORT;
-app.listen(PORT, () => {
+const PORT = process.env.PORT || 3001;
+server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });

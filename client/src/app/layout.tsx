@@ -1,8 +1,8 @@
 import "@/styles/globals.css";
 import AuthContainer from "@/components/provider/AuthContainer";
 
-import { SpeedInsights } from "@vercel/speed-insights/next"
-import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 
 export default function RootLayout({
   children,
@@ -12,9 +12,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
-      <body
-        className="h-screen overflow-hidden bg-nobbleBlack-700 text-white font-sans antialiased"
-      >
+      <body className="h-screen overflow-hidden bg-nobbleBlack-700 text-white font-sans antialiased">
         <SpeedInsights />
         <Analytics />
         <AuthContainer>{children}</AuthContainer>

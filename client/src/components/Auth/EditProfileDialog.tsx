@@ -19,12 +19,7 @@ import useAuthStore from "@/zustand/useAuthStore";
 import axios from "axios";
 
 function EditProfileDialog() {
-  const supabase = createClient(
-    "https://slevyapzeslflvibhaub.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNsZXZ5YXB6ZXNsZmx2aWJoYXViIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwOTMwODk3NywiZXhwIjoyMDI0ODg0OTc3fQ.iSEd5hJ46VGKLHQxZRvK2qJ6HF_PlLujml1ivTgMoyA"
-  );
-
-  const { user, logout, login } = useAuthStore();
+  const { user, logout, login, supabase } = useAuthStore();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
