@@ -25,9 +25,9 @@ const AuthContainer = ({ children }: { children: React.ReactNode }) => {
           token: token.split("=")[1],
         })
         .then((res) => {
-          if (res.data.action === "redirect") {
+          if (res.data?.action === "redirect") {
             logout();
-            router.push(res.data.url);
+            router.push(res.data?.url);
           } else {
             login(res.data);
           }
