@@ -9,3 +9,13 @@ export function cn(...inputs: ClassValue[]) {
 export function isActivePath(path: string, pathname: string) {
   return path === pathname;
 }
+
+export function turkishToEnglish(str: string) {
+  const turkishChars = "ÇçĞğİıÖöŞşÜü";
+  const englishChars = "CcGgIiOoSsUu";
+
+  return str.replace(
+    /[ÇçĞğİıÖöŞşÜü]/g,
+    (match) => englishChars[turkishChars.indexOf(match)]
+  );
+}

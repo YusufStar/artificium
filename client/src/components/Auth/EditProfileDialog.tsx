@@ -14,27 +14,22 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CogIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { SupabaseClient, createClient } from "@supabase/supabase-js";
+import { createClient } from "@supabase/supabase-js";
 import useAuthStore from "@/zustand/useAuthStore";
 import axios from "axios";
+import { turkishToEnglish } from "@/lib/utils";
 
 function EditProfileDialog() {
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL as string,
+    process.env.NEXT_PUBLIC_SUPABASE_KEY as string
+  );
   const { user, logout, login } = useAuthStore();
-  const [supabase, setSupabase] = useState<SupabaseClient | null>(null);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [profilePhoto, setProfilePhoto] = useState("");
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL as string,
-      process.env.NEXT_PUBLIC_SUPABASE_KEY as string
-    );
-
-    setSupabase(supabase as SupabaseClient);
-  }, []);
 
   const getUser = async () => {
     setLoading(true);
@@ -63,27 +58,21 @@ function EditProfileDialog() {
   const uploadFile = async (file: File) => {
     setLoading(true);
     const random_name = Math.random().toString(36).substring(7);
-    const upload = await supabase?.storage
+    const upload = await supabase.storage
       .from("avatars")
-      .upload(`${user.firstName}_${user.lastName}/${random_name}`, file);
+      .upload(`${turkishToEnglish(user.firstName).replace(" ", "_")}_${turkishToEnglish(user.lastName).replace(" ", "_")}/${random_name}`, file);
 
-    /*
-      upload type
-      {
-        path: string:
-        id: string:
-        fullPath: string:
-    }
-      */
-
-    if (upload.error) {
+    if (upload?.error) {
       setLoading(false);
       return;
     }
 
+    console.log(upload)
+
     setProfilePhoto(
-      `https://slevyapzeslflvibhaub.supabase.co/storage/v1/object/public/${upload.data.fullPath}`
+      `https://slevyapzeslflvibhaub.supabase.co/storage/v1/object/public/${upload?.data?.fullPath}`
     );
+    
     setLoading(false);
   };
 
