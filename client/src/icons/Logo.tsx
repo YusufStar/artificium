@@ -8,7 +8,7 @@ const Logo = ({
 }: {
   width?: number;
   heigh?: number;
-  color?: number;
+  color?: string;
   className?: string;
 }) => {
   return (
