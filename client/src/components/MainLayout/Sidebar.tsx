@@ -72,7 +72,7 @@ const Sidebar = () => {
         <div className="flex flex-col gap-2">
           <NavigationButton
             secondary
-            path="/?pid=1"
+            path="/artificium/?pid=1"
             label="Orbital Oddysey"
             color="#B6F09C"
             icon={Square}
@@ -80,7 +80,7 @@ const Sidebar = () => {
           />
           <NavigationButton
             secondary
-            path="/?pid=2"
+            path="/artificium/?pid=2"
             label="Digital Product Launch"
             color="#D0302F"
             icon={Triangle}

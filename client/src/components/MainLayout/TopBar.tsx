@@ -1,10 +1,12 @@
 "use client";
 import Icons from "@/icons";
+import useChatStore from "@/zustand/useChatStore";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const TopBar = () => {
+  const { pid } = useChatStore();
   const [position, setPosition] = useState<{
     x: number;
     y: number;
@@ -108,47 +110,47 @@ const TopBar = () => {
           }}
         />
 
-        <button
-          ref={(ref) => (buttonRefs.current[0] = ref)}
-          onClick={(e) => handleClick(e, "Artificium")}
-          className="py-6 px-2"
-        >
-          <Link className="flex gap-12" href={"/artificium"}>
+        <Link className="py-6 px-2" href={`/artificium?pid=${pid}`}>
+          <button
+            ref={(ref) => (buttonRefs.current[0] = ref)}
+            onClick={(e) => handleClick(e, "Artificium")}
+            className="flex gap-12"
+          >
             <Icons name="logo" width={20} heigh={20} color="#B6F09C" />
 
             <span className="text-nobbleBlack-100 text-14 font-semibold">
               Artificium
             </span>
-          </Link>
-        </button>
+          </button>
+        </Link>
 
-        <button
-          ref={(ref) => (buttonRefs.current[1] = ref)}
-          onClick={(e) => handleClick(e, "Chat")}
-          className="py-6 px-2"
-        >
-          <Link className="flex gap-12" href={"/chat"}>
+        <Link className="py-6 px-2" href={`/chat?pid=${pid}`}>
+          <button
+            ref={(ref) => (buttonRefs.current[1] = ref)}
+            onClick={(e) => handleClick(e, "Chat")}
+            className="flex gap-12"
+          >
             <Icons name="logo" width={20} heigh={20} color="#B6F09C" />
 
             <span className="text-nobbleBlack-100 text-14 font-semibold">
               Chat
             </span>
-          </Link>
-        </button>
+          </button>
+        </Link>
 
-        <button
-          ref={(ref) => (buttonRefs.current[2] = ref)}
-          onClick={(e) => handleClick(e, "Library")}
-          className="py-6 px-2"
-        >
-          <Link className="flex gap-12" href={"/library"}>
+        <Link className="py-6 px-2" href={`/library?pid=${pid}`}>
+          <button
+            ref={(ref) => (buttonRefs.current[2] = ref)}
+            onClick={(e) => handleClick(e, "Library")}
+            className="flex gap-12"
+          >
             <Icons name="logo" width={20} heigh={20} color="#B6F09C" />
 
             <span className="text-nobbleBlack-100 text-14 font-semibold">
               Library
             </span>
-          </Link>
-        </button>
+          </button>
+        </Link>
       </div>
     </div>
   );
