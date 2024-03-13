@@ -5,7 +5,7 @@ import Logo from "./Logo";
 type Props = {
   width?: number;
   heigh?: number;
-  color?: number;
+  color?: string | number;
   name: "logo";
   className?: string;
 };

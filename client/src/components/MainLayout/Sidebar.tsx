@@ -16,6 +16,8 @@ const Sidebar = () => {
   useEffect(() => {
     if (searchParams?.get("pid")) {
       setPid(searchParams?.get("pid") as string);
+    } else {
+      setPid("");
     }
   }, [searchParams]);
 
