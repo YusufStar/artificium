@@ -1,5 +1,4 @@
 import { prisma } from "@/lib/prisma";
-import { addOrganization } from "@/lib/server";
 import jwt from "jsonwebtoken";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -9,14 +8,9 @@ export default async function handler(
 ) {
   if (req.method === "POST") {
     try {
-      const { token, name, avatar } = req.body;
+      const { token, name } = req.body;
 
       const data = jwt.verify(token, process.env.JWT_KEY);
-
-      const oraganization = await addOrganization({
-        name: name,
-        avatar: avatar,
-      });
 
       const user = await prisma.user.findUnique({
         where: {
@@ -27,9 +21,29 @@ export default async function handler(
         },
       });
 
+      const oraganization = await prisma.organization.findUnique({
+        where: {
+          name: name,
+        },
+      });
+
+      if (oraganization === null) {
+        return res.status(201).json({
+          message: "Organization not found",
+          action: "error",
+        });
+      }
+
+      if (user.organizationId !== null) {
+        return res.status(201).json({
+          message: "You are already in an organization",
+          action: "error",
+        });
+      }
+
       await prisma.user.update({
         where: {
-          id: (data as any).id,
+          id: user.id,
         },
         data: {
           organization: {
@@ -44,28 +58,20 @@ export default async function handler(
         where: {
           id: oraganization.id,
         },
-        include: {
-          members: true,
-        },
         data: {
           members: {
             connect: {
-              id: (data as any).id,
+              id: user.id,
             },
           },
         },
       });
 
-      const org = await prisma.organization.findUnique({
-        where: {
-          id: oraganization.id,
-        },
-        include: {
-          members: true,
-        },
+      return res.status(201).json({
+        message: "Success! Redirecting...",
+        action: "redirect",
+        url: "/",
       });
-
-      return res.json(org);
     } catch (error: any) {
       if (error.name === "TokenExpiredError") {
         res.setHeader(

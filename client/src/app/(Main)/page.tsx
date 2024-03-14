@@ -7,8 +7,6 @@ import toast from "react-hot-toast";
 export default function Home() {
   const { user } = useAuthStore();
 
-  useEffect(() => {}, []);
-
   return (
     <div className="min-h-screen w-full flex p-24 items-center justify-center">
       <div className="flex flex-col items-center">

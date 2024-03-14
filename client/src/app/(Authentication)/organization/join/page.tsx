@@ -1,7 +1,8 @@
+'use client'
 import React from "react";
 
-const OrganizationCreate = () => {
-  return <div>OrganizationCreate</div>;
+const OrganizationJoin = () => {
+  return <div>OrganizationJoin</div>;
 };
 
-export default OrganizationCreate;
+export default OrganizationJoin;

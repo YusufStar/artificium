@@ -65,13 +65,7 @@ async function handler(req, res) {
     });
     */
 
-    const payload = {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-    };
-
-    const token = jwt.sign(payload, process.env.JWT_KEY, {
+    const token = jwt.sign(user, process.env.JWT_KEY, {
       expiresIn: "30d",
     });
 

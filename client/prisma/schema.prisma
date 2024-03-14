@@ -48,11 +48,11 @@ model VerifyToken {
 
 model Organization {
   id     String  @id @default(cuid())
-  name   String
+  name   String  @unique
   avatar String?
 
-  members  User[]
-  
+  members User[]
+
   projects Project[]
 
   createdAt DateTime @default(now())

@@ -97,8 +97,6 @@ function EditProfileDialog() {
       setLastName(user.lastName);
       setEmail(user.email);
       setProfilePhoto(user.profilePhoto);
-    } else {
-      getUser();
     }
   }, [user]);
 

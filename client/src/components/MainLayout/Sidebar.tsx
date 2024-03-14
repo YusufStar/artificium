@@ -36,11 +36,13 @@ const Sidebar = () => {
 
         <div className="flex flex-col gap-[0.25rem]">
           {/* Organization Name */}
-          <span className="font-semibold text-14 2xl:text-16">Intellisys</span>
+          <span className="font-semibold text-14 2xl:text-16">
+            {user?.organization?.name}
+          </span>
 
           {/* Organization member length */}
           <span className="text-stemGreen-500 text-12 font-medium">
-            12 members
+            {user?.organization?.members?.length}
           </span>
         </div>
 

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import useAuthStore from "@/zustand/useAuthStore";
 import { useRouter } from "next/navigation";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import LoadingContainer from "../ui/Loading";
 
 const AuthContainer = ({ children }: { children: React.ReactNode }) => {
@@ -12,7 +12,6 @@ const AuthContainer = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const { replace } = useRouter();
   const { user, login, logout } = useAuthStore();
-  const router = useRouter();
 
   const getUser = async () => {
     const token = document.cookie
@@ -20,29 +19,49 @@ const AuthContainer = ({ children }: { children: React.ReactNode }) => {
       .find((row) => row.startsWith("token="));
 
     if (token) {
-      axios
-        .post("/api/auth", {
-          token: token.split("=")[1],
-        })
-        .then((res) => {
-          if (res.data?.action === "redirect") {
-            logout();
-            router.push(res.data?.url);
-          } else {
-            login(res.data);
-          }
-          setLoading(false);
-        })
-        .catch((err) => {
-          setLoading(false);
-          console.error(err);
+      try {
+        const response = await axios.post("/api/auth", {
+          token: token.split("=")[1] ,
         });
+
+        const { data } = response;
+
+        if (data.action === "success") {
+          if (!user) {
+            toast.success(data.message);
+          }
+          login(data.user);
+        }
+
+        if (data.action === "error") {
+          toast.error(data.message);
+          replace(data.url);
+        }
+
+        if (data.action === "redirect") {
+          replace(data.url);
+        }
+
+        if (data.action === "auth") {
+          logout();
+          if (pathname !== "/login" && pathname !== "/register") {
+            replace("/login");
+          }
+        }
+      } catch (error) {
+        setLoading(false);
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
     } else {
       setLoading(false);
       if (
         pathname !== "/login" &&
         pathname !== "/register" &&
         pathname !== "/verify-email" &&
+        pathname !== "/forgot-password" &&
+        pathname !== "/reset-password" &&
         !user
       ) {
         replace("/login");
@@ -51,14 +70,10 @@ const AuthContainer = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-
     getUser();
 
-    // 1 dakikada bir veriyi güncelle
     const interval = setInterval(getUser, 60000);
 
-    // Temizlik işlemi
     return () => clearInterval(interval);
   }, [pathname]);
 
