@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
 
 export function middleware(request: NextRequest) {
-  const token = request.cookies?.token;
+  const token = (request.cookies as { token?: string })?.token;
 
   if (token) {
     try {
