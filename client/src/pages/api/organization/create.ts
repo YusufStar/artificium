@@ -11,7 +11,7 @@ export default async function handler(
     try {
       const { token, name, avatar } = req.body;
 
-      const data = jwt.verify(token, process.env.JWT_KEY);
+      const data = jwt.verify(token, process.env.JWT_KEY as string);
 
       const oraganization = await addOrganization({
         name: name,

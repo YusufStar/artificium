@@ -10,16 +10,16 @@ export default async function handler(
     try {
       const { token, name } = req.body;
 
-      const data = jwt.verify(token, process.env.JWT_KEY);
+      const data = jwt.verify(token, process.env.JWT_KEY as string);
 
-      const user = await prisma.user.findUnique({
+      const user = (await prisma.user.findUnique({
         where: {
           id: (data as any).id,
         },
         include: {
           organization: true,
         },
-      });
+      })) as any;
 
       const oraganization = await prisma.organization.findUnique({
         where: {
