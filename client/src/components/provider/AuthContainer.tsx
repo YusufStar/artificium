@@ -31,11 +31,14 @@ const AuthContainer = ({ children }: { children: React.ReactNode }) => {
           } else {
             login(res.data);
           }
+          setLoading(false);
         })
         .catch((err) => {
+          setLoading(false);
           console.error(err);
         });
     } else {
+      setLoading(false);
       if (
         pathname !== "/login" &&
         pathname !== "/register" &&
@@ -50,7 +53,7 @@ const AuthContainer = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
 
-    getUser()
+    getUser();
 
     // 1 dakikada bir veriyi güncelle
     const interval = setInterval(getUser, 60000);

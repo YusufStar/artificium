@@ -1,35 +1,25 @@
-/* get user with token (cookie) */
 import { prisma } from "@/lib/prisma";
+import { addOrganization } from "@/lib/server";
 import jwt from "jsonwebtoken";
+import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handler(req, res) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   if (req.method === "POST") {
     try {
-      const { token } = req.body;
+      const { token, name, avatar } = req.body;
 
-      const data = jwt.verify(token, process.env.JWT_KEY);
+      jwt.verify(token, process.env.JWT_KEY as string);
 
-      const id = data.id;
-
-      const user = await prisma.user.findUnique({
-        where: {
-          id: id,
-        },
-        include: {
-          organization: true,
-        },
+      const oraganization = await addOrganization({
+        name: name,
+        avatar: avatar,
       });
 
-      if (!user.organization) {
-        return res.status(201).json({
-          message: "Organization not found.",
-          action: "redirect",
-          url: "/organization/join",
-        });
-      }
-
-      return res.json(user);
-    } catch (error) {
+      return res.json(oraganization);
+    } catch (error: any) {
       if (error.name === "TokenExpiredError") {
         res.setHeader(
           "Set-Cookie",
@@ -50,7 +40,5 @@ export default async function handler(req, res) {
         return res.status(401).json({ message: "Unauthorized" });
       }
     }
-  } else {
-    return res.status(405).json({ message: "Method not allowed" });
   }
 }

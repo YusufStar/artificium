@@ -25,14 +25,6 @@ const LoadingContainer = ({ setLoading }: { setLoading: any }) => {
   // loadingBar'ın 100'den fazla olmasını engellemek için kontrol ekleyelim
   const loadingPercentage = loadingBar > 100 ? 100 : loadingBar;
 
-  useEffect(() => {
-    if (loadingPercentage === 100) {
-      setTimeout(() => {
-        setLoading(false);
-      }, 350);
-    }
-  }, [loadingPercentage]);
-
   return (
     <div className="bg-nobbleBlack-600 h-screen flex items-center justify-center flex-col gap-6">
       <Icons name="logo" heigh={64} width={64} className="animate-pulse" />

@@ -23,7 +23,10 @@ export function middleware(req: NextRequest, event: NextFetchEvent) {
       if (
         req.url !== "/login" &&
         req.url !== "/register" &&
-        req.url !== "/verify-email"
+        req.url !== "/verify-email" &&
+        req.url !== "/forgot-password" &&
+        req.url !== "/organization/create" &&
+        req.url !== "/organization/join"
       ) {
         return NextResponse.redirect("/login");
       } else {

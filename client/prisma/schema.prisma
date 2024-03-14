@@ -24,12 +24,15 @@ model User {
   emailVerified Boolean @default(false)
   verifyTokenId String?
 
-  Organization   Organization? @relation(fields: [organizationId], references: [id])
+  organization   Organization? @relation(fields: [organizationId], references: [id])
   organizationId String?
 
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  VerifyToken VerifyToken? @relation(fields: [verifyTokenId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  verifyToken VerifyToken? @relation(fields: [verifyTokenId], references: [id])
+
+  AI_Message AI_Message[]
 }
 
 // kullanici email dogrulama tokeni
@@ -48,8 +51,49 @@ model Organization {
   name   String
   avatar String?
 
-  members User[]
+  members  User[]
+  
+  projects Project[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Project {
+  id          String  @id @default(cuid())
+  name        String
+  description String?
+
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+
+  artificium Artificium @relation(fields: [artificiumId], references: [id])
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  artificiumId String
+}
+
+model Artificium {
+  id       String       @id @default(cuid())
+  messages AI_Message[]
+
+  projectId String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Project   Project[]
+}
+
+model AI_Message {
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String
+
+  artificium   Artificium @relation(fields: [artificiumId], references: [id])
+  artificiumId String
 }
