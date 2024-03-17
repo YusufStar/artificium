@@ -1,7 +1,7 @@
 "use client";
 import useAuthStore from "@/zustand/useAuthStore";
 import useChatStore from "@/zustand/useChatStore";
-import { ChevronDown, Search, Square, Triangle } from "lucide-react";
+import { ChevronDown, Plus, Search, Square, Triangle } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect } from "react";
 import EditProfileDialog from "../Auth/EditProfileDialog";
@@ -11,8 +11,8 @@ import { useProject } from "@/lib/api";
 
 const Sidebar = () => {
   const { user } = useAuthStore();
-  const { pid, setPid } = useChatStore();
-  const { data, isError, isLoading } = useProject(pid);
+  const { pid, setPid, projects, setProjects } = useChatStore();
+
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -22,6 +22,15 @@ const Sidebar = () => {
       setPid("");
     }
   }, [searchParams]);
+
+  useEffect(() => {
+    console.log("RELOAD PROJECTS");
+    if (user) {
+      useProject(user.organization.id).then((data) => {
+        setProjects(data);
+      });
+    }
+  }, [user]);
 
   return (
     <div className="w-[19.5rem] h-full bg-nobbleBlack-800 rounded-20 flex flex-col p-[0.5rem]">
@@ -74,22 +83,26 @@ const Sidebar = () => {
         </span>
 
         <div className="flex flex-col gap-2">
-          <NavigationButton
-            secondary
-            path="/artificium/?pid=1"
-            label="Orbital Oddysey"
-            color="#B6F09C"
-            icon={Square}
-            active={pid === "1"}
-          />
-          <NavigationButton
-            secondary
-            path="/artificium/?pid=2"
-            label="Digital Product Launch"
-            color="#D0302F"
-            icon={Triangle}
-            active={pid === "2"}
-          />
+          {projects?.map((project) => (
+            <NavigationButton
+              key={project.id}
+              path={`/artificium/?pid=${project.id}`}
+              label={project.name}
+              color="#B6F09C"
+              icon={Square}
+              active={pid === project.id}
+            />
+          ))}
+
+          <button className="border-t rounded-8 p-14 gap-16 flex items-center transition-all hover:opacity-50 bg-nobbleBlack-700 duration-200 ease-in-out">
+            <Plus
+              color="#686B6E"
+              className="w-[1.25rem] h-[1.25rem] drop-shadow-icon"
+            />
+            <span className="font-semibold text-14 text-nobbleBlack-100">
+              Add Project
+            </span>
+          </button>
         </div>
       </div>
 

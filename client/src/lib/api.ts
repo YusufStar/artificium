@@ -1,24 +1,11 @@
-import useSWR from "swr";
+"use client";
 
-export default async function fetcher<JSON = any>(
-  input: RequestInfo,
-  init?: RequestInit
-): Promise<JSON> {
-  const res = await fetch(input, init);
-  return res.json();
-}
+import axios from "axios";
 
-export function useProject(id: string) {
-  const key = `/api/organization/project?pid=${id}`;
+export async function useProject(id: string, all: boolean = true) {
+  const key = `/api/organization/project?pid=${id}&all=${all}`;
 
-  const { data, error, isValidating } = useSWR<any, Error>(
-    id ? key : null,
-    fetcher
-  );
+  const { data } = await axios.get(key);
 
-  return {
-    data,
-    isLoading: !data && !error && isValidating,
-    isError: error,
-  };
+  return data as any[];
 }
