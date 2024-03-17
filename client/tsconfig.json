@@ -21,6 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/pages/api/auth/register/index.js", "src/pages/api/auth/login/index.js", "src/lib/prisma.js", "src/zustand/useAuthStore.js", "src/pages/api/auth/verify-email/index.ts", "src/pages/api/organization/create.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/pages/api/auth/register/index.js", "src/pages/api/auth/login/index.js", "src/lib/prisma.js", "src/zustand/useAuthStore.ts", "src/pages/api/auth/verify-email/index.ts", "src/pages/api/organization/create.ts"],
   "exclude": ["node_modules"]
 }

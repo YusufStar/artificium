@@ -21,7 +21,7 @@ const AuthContainer = ({ children }: { children: React.ReactNode }) => {
     if (token) {
       try {
         const response = await axios.post("/api/auth", {
-          token: token.split("=")[1] ,
+          token: token.split("=")[1],
         });
 
         const { data } = response;
@@ -72,9 +72,11 @@ const AuthContainer = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     getUser();
 
-    const interval = setInterval(getUser, 60000);
+    /*
+      const interval = setInterval(getUser, 60000);
 
-    return () => clearInterval(interval);
+      return () => clearInterval(interval);
+    */
   }, [pathname]);
 
   return (

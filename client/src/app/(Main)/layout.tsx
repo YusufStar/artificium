@@ -2,11 +2,22 @@
 import Sidebar from "@/components/MainLayout/Sidebar";
 import TopBar from "@/components/MainLayout/TopBar";
 import SocketProvider from "@/components/provider/SocketProvider";
+import useAuthStore from "@/zustand/useAuthStore";
 import { usePathname } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user } = useAuthStore();
+
+  useEffect(() => {
+    console.log(user?.organization)
+    if (!user?.organization) {
+      router.replace("/organization/create");
+    }
+  }, [user]);
 
   return (
     <SocketProvider>

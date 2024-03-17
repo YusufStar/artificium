@@ -67,11 +67,11 @@ model Project {
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
 
-  artificium Artificium @relation(fields: [artificiumId], references: [id])
-
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  artificium   Artificium @relation(fields: [artificiumId], references: [id])
   artificiumId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Artificium {

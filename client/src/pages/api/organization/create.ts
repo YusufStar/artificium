@@ -18,15 +18,6 @@ export default async function handler(
         avatar: avatar,
       });
 
-      const user = await prisma.user.findUnique({
-        where: {
-          id: (data as any).id,
-        },
-        include: {
-          organization: true,
-        },
-      });
-
       await prisma.user.update({
         where: {
           id: (data as any).id,

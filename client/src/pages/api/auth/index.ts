@@ -49,7 +49,6 @@ export default async function handler(
         message: "Successfull authenticated.",
       });
     } catch (error: any) {
-      res.setHeader("Set-Cookie", "token=; path=/; max-age=3600; samesite=lax");
       if (error.name === "TokenExpiredError") {
         return res.status(201).json({
           message: "Token expired",

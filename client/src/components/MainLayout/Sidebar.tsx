@@ -7,10 +7,12 @@ import React, { useEffect } from "react";
 import EditProfileDialog from "../Auth/EditProfileDialog";
 import NavigationButton from "../ui/navigation-button";
 import { useSearchParams } from "next/navigation";
+import { useProject } from "@/lib/api";
 
 const Sidebar = () => {
   const { user } = useAuthStore();
   const { pid, setPid } = useChatStore();
+  const { data, isError, isLoading } = useProject(pid);
   const searchParams = useSearchParams();
 
   useEffect(() => {
