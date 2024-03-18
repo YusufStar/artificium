@@ -11,6 +11,7 @@ type Props = {
   secondary?: boolean;
   color?: string;
   active?: boolean;
+  onClick?: () => void;
 };
 
 const NavigationButton = (props: Props) => {
@@ -18,12 +19,11 @@ const NavigationButton = (props: Props) => {
 
   return (
     <Link
+    onClick={props.onClick}
       className={cn(
         "border-t rounded-8 p-14 gap-16 flex items-center transition-all duration-200 ease-in-out",
-        isActivePath(pathname, props.path)
-          ? "bg-[#131619] border-glassStroke"
-          : props.secondary && props.active
-          ? "bg-[#131619] glass-fill"
+        props.active
+          ? "bg-[#131619] glass-fill border-t glassStroke"
           : "bg-nobbleBlack-800 border-t-nobbleBlack-800"
       )}
       href={props.path}

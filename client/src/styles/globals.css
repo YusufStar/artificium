@@ -33,7 +33,10 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground text-[16px];
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply antialiased text-[15px];
   }
 }
 

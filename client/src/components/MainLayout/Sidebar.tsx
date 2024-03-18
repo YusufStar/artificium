@@ -3,15 +3,35 @@ import useAuthStore from "@/zustand/useAuthStore";
 import useChatStore from "@/zustand/useChatStore";
 import { ChevronDown, Plus, Search, Square, Triangle } from "lucide-react";
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import EditProfileDialog from "../Auth/EditProfileDialog";
 import NavigationButton from "../ui/navigation-button";
 import { useSearchParams } from "next/navigation";
 import { useProject } from "@/lib/api";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 const Sidebar = () => {
   const { user } = useAuthStore();
   const { pid, setPid, projects, setProjects } = useChatStore();
+
+  const [projectName, setProjectName] = useState<string>("");
+  const [projectDescription, setProjectDescription] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [projectDialog, setProjectDialog] = useState<boolean>(false);
 
   const searchParams = useSearchParams();
 
@@ -24,13 +44,38 @@ const Sidebar = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    console.log("RELOAD PROJECTS");
     if (user) {
       useProject(user.organization.id).then((data) => {
         setProjects(data);
       });
     }
   }, [user]);
+
+  const handleCreateProject = async () => {
+    setLoading(true);
+
+    await axios
+      .post("/api/organization/project", {
+        name: projectName,
+        organizationId: user?.organization.id,
+        description: projectDescription,
+      })
+      .then(async (res) => {
+        useProject(user.organization.id).then((data) => {
+          setProjects(data);
+        });
+        setLoading(false);
+
+        setProjectDialog(false);
+        setProjectName("");
+        setProjectDescription("");
+        toast.success("Project created successfully");
+      })
+      .catch((error) => {
+        setLoading(false);
+        toast.error("Failed to create project");
+      });
+  };
 
   return (
     <div className="w-[19.5rem] h-full bg-nobbleBlack-800 rounded-20 flex flex-col p-[0.5rem]">
@@ -83,26 +128,93 @@ const Sidebar = () => {
         </span>
 
         <div className="flex flex-col gap-2">
-          {projects?.map((project) => (
-            <NavigationButton
-              key={project.id}
-              path={`/artificium/?pid=${project.id}`}
-              label={project.name}
-              color="#B6F09C"
-              icon={Square}
-              active={pid === project.id}
-            />
-          ))}
+          {projects?.map((project) => {
+            return (
+              <NavigationButton
+                key={project.id}
+                path={`/artificium/?pid=${project.id}`}
+                label={project.name}
+                color="#B6F09C"
+                icon={Square}
+                active={pid === project.id}
+              />
+            );
+          })}
 
-          <button className="border-t rounded-8 p-14 gap-16 flex items-center transition-all hover:opacity-50 bg-nobbleBlack-700 duration-200 ease-in-out">
-            <Plus
-              color="#686B6E"
-              className="w-[1.25rem] h-[1.25rem] drop-shadow-icon"
-            />
-            <span className="font-semibold text-14 text-nobbleBlack-100">
-              Add Project
-            </span>
-          </button>
+          <Dialog
+            open={projectDialog}
+            onOpenChange={(open) => {
+              setProjectDialog(open);
+              if (open) {
+                setLoading(false);
+                setProjectName("");
+                setProjectDescription("");
+              }
+            }}
+          >
+            <DialogTrigger asChild>
+              <button className="border-t rounded-8 p-14 gap-16 flex items-center transition-all hover:opacity-50 bg-nobbleBlack-700 duration-200 ease-in-out">
+                <Plus
+                  color="#686B6E"
+                  className="w-[1.25rem] h-[1.25rem] drop-shadow-icon"
+                />
+                <span className="font-semibold text-14 text-nobbleBlack-100">
+                  Add Project
+                </span>
+              </button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Edit profile</DialogTitle>
+                <DialogDescription>
+                  Make changes to your profile here. Click save when you're
+                  done.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="projectName" className="text-right">
+                    Name
+                  </Label>
+                  <Input
+                    type="text"
+                    id="projectName"
+                    value={projectName}
+                    onChange={(e) => setProjectName(e.target.value)}
+                    className="col-span-3"
+                  />
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="projectDescription" className="text-right">
+                    Description
+                  </Label>
+                  <Input
+                    type="text"
+                    id="projectDescription"
+                    value={projectDescription}
+                    onChange={(e) => setProjectDescription(e.target.value)}
+                    className="col-span-3"
+                  />
+                </div>
+              </div>
+              <DialogFooter>
+                <Button
+                  disabled={loading}
+                  onClick={handleCreateProject}
+                  className="bg-stemGreen-500 hover:bg-stemGreen-500/80 font-semibold text-dayBlue-900"
+                >
+                  {loading ? (
+                    <>
+                      <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                      Project Creating...
+                    </>
+                  ) : (
+                    "Create Project"
+                  )}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
 

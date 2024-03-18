@@ -1,12 +1,13 @@
 "use client";
 import Icons from "@/icons";
+import { useProject } from "@/lib/api";
+import useAuthStore from "@/zustand/useAuthStore";
 import useChatStore from "@/zustand/useChatStore";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const TopBar = () => {
-  const { pid } = useChatStore();
   const [position, setPosition] = useState<{
     x: number;
     y: number;
@@ -20,8 +21,11 @@ const TopBar = () => {
     height: 0,
     title: "",
   });
-  const buttonRefs = React.useRef<HTMLButtonElement[] | null[]>([]);
+  const { user } = useAuthStore();
+  const { projects, pid } = useChatStore();
+  const buttonRefs = useRef<HTMLButtonElement[] | null[]>([]);
   const pathname = usePathname();
+  const [currentProject, setCurrentProject] = useState<any>({});
 
   useEffect(() => {
     if (buttonRefs.current.length === 0) return;
@@ -65,6 +69,14 @@ const TopBar = () => {
     });
   }, [pathname, buttonRefs]);
 
+  useEffect(() => {
+    if (user && pid && projects.length > 0) {
+      useProject(pid, false).then((data: any[]) => {
+        setCurrentProject(data.filter((project) => project.id === pid)[0]);
+      });
+    }
+  }, [pid, user]);
+
   const handleClick = (
     e: React.MouseEvent<HTMLButtonElement>,
     title: string
@@ -83,11 +95,11 @@ const TopBar = () => {
       <div className="flex items-start justify-between h-auto w-full p-24 border-b border-[#131619]">
         <div className="flex flex-col gap-1">
           {/* Project Name */}
-          <span className="font-bold text-20">Orbital Oddysey</span>
+          <span className="font-bold text-20">{currentProject.name}</span>
 
           {/* Project Descriptiom */}
           <span className="text-14 font-medium text-nobbleBlack-300">
-            Marketing Campaign for a new TV series Launch
+            {currentProject.description}
           </span>
         </div>
       </div>
