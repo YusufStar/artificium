@@ -8,6 +8,8 @@ interface ChatState {
   setPid: (pid: string) => void;
   projects: any[];
   setProjects: (projects: any[]) => void;
+  room: string | null;
+  setRoom: (room: string | null) => void;
 }
 
 const useChatStore = create<ChatState>()((set) => ({
@@ -17,6 +19,8 @@ const useChatStore = create<ChatState>()((set) => ({
   setPid: (pid) => set({ pid }),
   projects: [],
   setProjects: (projects) => set({ projects }),
+  room: null,
+  setRoom: (room) => set({ room }),
 }));
 
 export default useChatStore;

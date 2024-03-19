@@ -32,6 +32,16 @@ io.on("connection", (socket) => {
         socket.join(roomId);
         console.log("a user joined room: " + roomId + " user id: " + userId);
     });
+    // Kullanıcının bir odadan ayrılması için socket oluştur
+    socket.on("leave-room", (roomId, userId) => {
+        socket.leave(roomId);
+        console.log("a user left room: " + roomId + " user id: " + userId);
+    });
+    // Kullanıcının bir odaya mesaj göndermesi için socket oluştur
+    socket.on("send-message", (roomId, message) => {
+        io.to(roomId).emit("message", message);
+        console.log("a user sent message to room: " + roomId + " message: " + message);
+    });
 });
 // Set up the Express application to listen on port 3000
 const PORT = process.env.PORT || 3001;

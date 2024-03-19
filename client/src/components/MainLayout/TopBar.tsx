@@ -75,7 +75,7 @@ const TopBar = () => {
         setCurrentProject(data.filter((project) => project.id === pid)[0]);
       });
     }
-  }, [pid, user]);
+  }, [pid, user, projects]);
 
   const handleClick = (
     e: React.MouseEvent<HTMLButtonElement>,

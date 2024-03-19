@@ -45,9 +45,7 @@ const Sidebar = () => {
 
   useEffect(() => {
     if (user) {
-      useProject(user.organization.id).then((data) => {
-        setProjects(data);
-      });
+      useProject(user.organization.id, true, setProjects);
     }
   }, [user]);
 

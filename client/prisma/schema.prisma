@@ -32,7 +32,7 @@ model User {
 
   verifyToken VerifyToken? @relation(fields: [verifyTokenId], references: [id])
 
-  AI_Message AI_Message[]
+  Message Message[]
 }
 
 // kullanici email dogrulama tokeni
@@ -75,25 +75,26 @@ model Project {
 }
 
 model Artificium {
-  id       String       @id @default(cuid())
+  id String @id @default(cuid())
 
-  room String @unique
-  messages AI_Message[]
-  Project   Project[]
+  room     String    @unique
+  messages Message[]
+  Project  Project[]
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-}
-
-model AI_Message {
-  id        String   @id @default(cuid())
-  content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
 
-  author   User   @relation(fields: [authorId], references: [id])
+model Message {
+  id        String   @id @default(cuid())
+  content   String
+
+  author   User    @relation(fields: [authorId], references: [id])
   authorId String
 
   artificium   Artificium @relation(fields: [artificiumId], references: [id])
   artificiumId String
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
