@@ -1,4 +1,4 @@
-import { prisma } from "./prisma.ts";
+import { prisma } from "@/lib/prisma";
 
 export const addOrganization = async (organization: {
   name: string;
