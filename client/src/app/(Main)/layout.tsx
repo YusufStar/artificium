@@ -24,14 +24,14 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
       <div className="h-screen w-full flex gap-12 p-12">
         <Sidebar />
 
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col gap-16">
           {pathname === "/billing" ||
           pathname === "/search" ||
           !params?.get("pid") ? null : (
             <TopBar />
           )}
 
-          <div className="flex-1">{children}</div>
+          <div className="flex-1 overflow-hidden">{children}</div>
         </div>
       </div>
     </SocketProvider>

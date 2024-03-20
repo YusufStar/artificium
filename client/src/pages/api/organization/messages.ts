@@ -24,6 +24,9 @@ export default async function handler(
         where: {
           artificiumId: artificium?.id,
         },
+        include: {
+          author: true,
+        }
       });
 
       return res.status(200).json(messages);

@@ -21,7 +21,11 @@ export default async function handler(
         select: {
           organization: {
             select: {
-              projects: true,
+              projects: {
+                include: {
+                  Artificium: true,
+                }
+              },
             },
           },
         },

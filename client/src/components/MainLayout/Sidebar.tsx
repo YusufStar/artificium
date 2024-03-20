@@ -44,7 +44,7 @@ const Sidebar = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    if (user) {
+    if (user && user?.organization) {
       useProject(user.organization.id, true, setProjects);
     }
   }, [user]);

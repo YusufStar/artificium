@@ -74,6 +74,7 @@ const config = {
         24: "1.5rem",
         20: "1.25rem",
         16: "1rem",
+        12: "0.75rem",
         8: "0.5rem",
       },
       keyframes: {
@@ -97,6 +98,11 @@ const config = {
         16: "1rem",
         14: "0.875rem",
         36: "2.25rem",
+        72: "4.5rem",
+      },
+      margin: {
+        24: "1.5rem",
+        12: "0.75rem",
       },
       fontSize: {
         36: "2.25rem",
@@ -116,6 +122,12 @@ const config = {
         24: "1.5rem",
         12: "0.75rem",
         16: "1rem",
+      },
+      height: {
+        48: "3rem",
+      },
+      width: {
+        48: "3rem",
       },
     },
   },

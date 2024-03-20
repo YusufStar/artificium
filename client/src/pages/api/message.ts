@@ -26,6 +26,9 @@ export default async function handler(
             },
           },
         },
+        include: {
+          author: true,
+        },
       });
 
       return res.json(message);
