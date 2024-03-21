@@ -103,6 +103,7 @@ const config = {
       margin: {
         24: "1.5rem",
         12: "0.75rem",
+        8: "0.5rem",
       },
       fontSize: {
         36: "2.25rem",

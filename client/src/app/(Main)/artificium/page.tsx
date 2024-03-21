@@ -5,17 +5,26 @@ import { useMessages, useProject } from "@/lib/api";
 import useAuthStore from "@/zustand/useAuthStore";
 import useChatStore from "@/zustand/useChatStore";
 import axios from "axios";
-import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { VList, VListHandle } from "virtua";
 
 const Artificium = () => {
   const { user } = useAuthStore();
   const { pid, projects, socket } = useChatStore();
-  const params = useSearchParams();
+  const virtualRef = React.useRef<VListHandle | null>(null);
+
   const [messages, setMessages] = useState<any[]>([]);
   const [message, setMessage] = useState("");
   const [currentProject, setCurrentProject] = useState<any>({});
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (virtualRef.current) {
+      virtualRef.current.scrollToIndex(messages.length - 1, {
+        align: "end",
+      });
+    }
+  }, [messages, virtualRef]);
 
   useEffect(() => {
     if (!user || !currentProject?.Artificium?.room) return;
@@ -71,11 +80,11 @@ const Artificium = () => {
 
   return (
     <div className="flex h-full max-w-full w-full overflow-hidden flex-col gap-12">
-      <div className="flex flex-1 flex-col overflow-y-auto gap-16">
-        {messages.map((message, index) => {
-          return <Message key={index} message={message} />;
-        })}
-      </div>
+      <VList reverse ref={virtualRef} className="flex flex-1 flex-col gap-16">
+        {messages.map((msg) => (
+          <Message className="my-8" key={msg.id} message={msg} />
+        ))}
+      </VList>
 
       <MessageInput
         value={message}
