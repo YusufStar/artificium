@@ -22,6 +22,7 @@ const Artificium = () => {
     if (virtualRef.current) {
       virtualRef.current.scrollToIndex(messages.length - 1, {
         align: "end",
+        smooth: true,
       });
     }
   }, [messages, virtualRef]);
