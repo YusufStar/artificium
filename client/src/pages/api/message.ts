@@ -8,7 +8,7 @@ export default async function handler(
 ) {
   if (req.method === "POST") {
     try {
-      const { content, artificiumId, userId } = req.body;
+      const { content, artificiumId, userId, reply } = req.body;
 
       jwt.verify(req.cookies.token as string, process.env.JWT_KEY as string);
 

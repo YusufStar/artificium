@@ -6,6 +6,7 @@ import useAuthStore from "@/zustand/useAuthStore";
 import useChatStore from "@/zustand/useChatStore";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { VList, VListHandle } from "virtua";
 
 const Artificium = () => {
@@ -62,6 +63,14 @@ const Artificium = () => {
   const handleSendMessage = async () => {
     if (!message) return;
     setLoading(true);
+    const securityRegex = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
+    if (securityRegex.test(message)) {
+      setLoading(false);
+      setMessage("");
+      toast.error("Your message contains a script tag, please remove it.");
+      return;
+    }
+
     try {
       const { data } = await axios.post("/api/message", {
         content: message,
@@ -88,6 +97,7 @@ const Artificium = () => {
       </VList>
 
       <MessageInput
+        setValue={setMessage}
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         soundRecord={true}

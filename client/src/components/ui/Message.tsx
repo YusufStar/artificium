@@ -1,3 +1,4 @@
+import { messageNormalize } from "@/lib/formater";
 import { cn } from "@/lib/utils";
 import React from "react";
 
@@ -55,10 +56,9 @@ const Message = (props: Props) => {
   };
 
   return (
-    <div className={cn(
-      "flex flex-col p-16 rounded-16 border",
-      props.className
-    )}>
+    <div
+      className={cn("flex flex-col p-16 rounded-16 border", props.className)}
+    >
       <div className="flex items-center">
         <img
           className="w-48 h-48 object-cover mr-24 rounded-20"
@@ -74,8 +74,8 @@ const Message = (props: Props) => {
         </span>
       </div>
 
-      <div className="flex items-center pl-72 w-full text-nobbleBlack-300 font-medium">
-        {props.message?.content}
+      <div className="flex flex-col pl-72 w-full text-nobbleBlack-300 font-medium">
+        {messageNormalize(props.message.content)}
       </div>
     </div>
   );
