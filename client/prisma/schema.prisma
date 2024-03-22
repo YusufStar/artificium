@@ -85,16 +85,28 @@ model Artificium {
   updatedAt DateTime @updatedAt
 }
 
-model Message {
-  id        String   @id @default(cuid())
-  content   String
+// message reply
 
-  author   User    @relation(fields: [authorId], references: [id])
+model Message {
+  id      String  @id @default(cuid())
+  content String
+  replies Reply[]
+
+  author   User   @relation(fields: [authorId], references: [id])
   authorId String
 
   artificium   Artificium @relation(fields: [artificiumId], references: [id])
   artificiumId String
-  
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Reply {
+  id        String   @id @default(cuid())
+  content   String
+  message   Message  @relation(fields: [messageId], references: [id]) // 2. Message modeline referans veriliyor
+  messageId String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

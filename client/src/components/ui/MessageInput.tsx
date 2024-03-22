@@ -1,12 +1,11 @@
+"use client";
 import React from "react";
-import { Button } from "./button";
 import { Mic, Paperclip, RotateCcw, Send } from "lucide-react";
-import { ReloadIcon } from "@radix-ui/react-icons";
 
 // add input tag types
 type Props = {
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   soundRecord: boolean;
   type: HTMLInputElement["type"];
   fileInput: boolean;
@@ -16,6 +15,17 @@ type Props = {
 };
 
 const MessageInput = (props: Props) => {
+  const inputRef = React.useRef<HTMLTextAreaElement | null>(null);
+
+  const autoCalcHeight = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (inputRef.current) {
+      inputRef.current.style.height = "auto";
+      inputRef.current.style.height = `${inputRef.current.scrollHeight}px`;
+    }
+
+    props.onChange(e);
+  };
+
   return (
     <div className="w-full flex p-24 bg-nobbleBlack-800 rounded-20 gap-24">
       {props.soundRecord && (
@@ -31,11 +41,11 @@ const MessageInput = (props: Props) => {
         </button>
       )}
 
-      <input
+      <textarea
+        ref={inputRef}
         disabled={props.loading}
-        type={props.type}
         value={props.value}
-        onChange={props.onChange}
+        onChange={(e) => autoCalcHeight(e)}
         placeholder={props.placeholder}
         className="w-full h-48 flex items-center disabled:opacity-50 transition-all duration-200 bg-transparent text-nobbleBlack-300 placeholder:text-nobbleBlack-500 font-medium text-16 outline-none"
       />
