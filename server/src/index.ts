@@ -55,11 +55,14 @@ io.on("connection", (socket: Socket) => {
   // Kullanıcının bir odaya mesaj göndermesi için socket oluştur
   socket.on("send-message", (roomId, message) => {
     io.to(roomId).emit("message", message);
-    loger.info("a user sent message to room: " + roomId, {
-      message: message.content,
-      firstName: message.author.firstName,
-      lastName: message.author.lastName,
-    });
+    loger.info(
+      {
+        message: message.content,
+        firstName: message.author.firstName,
+        lastName: message.author.lastName,
+      },
+      "a user sent message to room: " + roomId
+    );
 
     const ats_regex = message.content.match(/@(\w+)/g);
     if (ats_regex) {
@@ -96,11 +99,14 @@ io.on("connection", (socket: Socket) => {
           });
 
           io.to(roomId).emit("message", response);
-          loger.info("artificium replied to user: ", {
-            message: response.content,
-            firstName: response.author.firstName,
-            lastName: response.author.lastName,
-          });
+          loger.info(
+            {
+              message: response.content,
+              firstName: response.author.firstName,
+              lastName: response.author.lastName,
+            },
+            "artificium replied to user: "
+          );
         }
       });
     }

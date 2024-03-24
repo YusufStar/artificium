@@ -59,11 +59,11 @@ io.on("connection", (socket) => {
     // Kullanıcının bir odaya mesaj göndermesi için socket oluştur
     socket.on("send-message", (roomId, message) => {
         io.to(roomId).emit("message", message);
-        loger.info("a user sent message to room: " + roomId, {
+        loger.info({
             message: message.content,
             firstName: message.author.firstName,
             lastName: message.author.lastName,
-        });
+        }, "a user sent message to room: " + roomId);
         const ats_regex = message.content.match(/@(\w+)/g);
         if (ats_regex) {
             ats_regex.forEach((at) => __awaiter(void 0, void 0, void 0, function* () {
@@ -97,11 +97,11 @@ io.on("connection", (socket) => {
                         },
                     });
                     io.to(roomId).emit("message", response);
-                    loger.info("artificium replied to user: ", {
+                    loger.info({
                         message: response.content,
                         firstName: response.author.firstName,
                         lastName: response.author.lastName,
-                    });
+                    }, "artificium replied to user: ");
                 }
             }));
         }
