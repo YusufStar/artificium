@@ -57,21 +57,43 @@ io.on("connection", (socket: Socket) => {
   // Kullanıcının bir odaya mesaj göndermesi için socket oluştur
   socket.on("send-message", (roomId, message) => {
     io.to(roomId).emit("message", message);
-    console.log(
-      "a user sent message to room: " + roomId + " message: " + message.content
-    );
 
     const ats_regex = message.content.match(/@(\w+)/g);
     if (ats_regex) {
       ats_regex.forEach(async (at: string) => {
         const username = at.slice(1);
-        const user = await prisma.user.findUnique({
-          where: {
-            firstName: username,
-          },
-        });
+        if (username === "artificium") {
+          const user = await prisma.user.findUnique({
+            where: {
+              firstName: username.toLowerCase(),
+            },
+          });
 
-        console.log(user); // Kullanıcıyı bulduğunuzda kullanıcıyı konsola yazdırın
+          const response = await prisma.message.create({
+            data: {
+              content:
+                "@" +
+                message?.author?.firstName +
+                " " +
+                "Merhaba ben artificium!",
+              author: {
+                connect: {
+                  id: user?.id,
+                },
+              },
+              artificium: {
+                connect: {
+                  id: message.artificiumId,
+                },
+              },
+            },
+            include: {
+              author: true,
+            },
+          });
+
+          io.to(roomId).emit("message", response);
+        }
       });
     }
   });

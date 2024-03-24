@@ -60,17 +60,40 @@ io.on("connection", (socket) => {
     // Kullanıcının bir odaya mesaj göndermesi için socket oluştur
     socket.on("send-message", (roomId, message) => {
         io.to(roomId).emit("message", message);
-        console.log("a user sent message to room: " + roomId + " message: " + message.content);
         const ats_regex = message.content.match(/@(\w+)/g);
         if (ats_regex) {
             ats_regex.forEach((at) => __awaiter(void 0, void 0, void 0, function* () {
+                var _a;
                 const username = at.slice(1);
-                const user = yield prisma.user.findUnique({
-                    where: {
-                        firstName: username,
-                    },
-                });
-                console.log(user); // Kullanıcıyı bulduğunuzda kullanıcıyı konsola yazdırın
+                if (username === "artificium") {
+                    const user = yield prisma.user.findUnique({
+                        where: {
+                            firstName: username.toLowerCase(),
+                        },
+                    });
+                    const response = yield prisma.message.create({
+                        data: {
+                            content: "@" +
+                                ((_a = message === null || message === void 0 ? void 0 : message.author) === null || _a === void 0 ? void 0 : _a.firstName) +
+                                " " +
+                                "Merhaba ben artificium!",
+                            author: {
+                                connect: {
+                                    id: user === null || user === void 0 ? void 0 : user.id,
+                                },
+                            },
+                            artificium: {
+                                connect: {
+                                    id: message.artificiumId,
+                                },
+                            },
+                        },
+                        include: {
+                            author: true,
+                        },
+                    });
+                    io.to(roomId).emit("message", response);
+                }
             }));
         }
     });
