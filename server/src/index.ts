@@ -2,9 +2,12 @@ import express from "express";
 import http from "http";
 import { Server, Socket } from "socket.io";
 import { config } from "dotenv";
+import morgan from "morgan";
+import { PrismaClient } from "@prisma/client";
 
 const app = express();
 const server = http.createServer(app); // Express uygulamanızı HTTP sunucusuna dönüştürün
+const prisma = new PrismaClient();
 const io = new Server(server, {
   cors: {
     origin: "*",
@@ -14,7 +17,17 @@ const io = new Server(server, {
 config();
 
 app.use(express.json());
+app.use(morgan("combined"));
 app.use(express.urlencoded({ extended: false }));
+
+const main = async () => {
+  // Prisma ile veritabanına bağlanın
+  await prisma.$connect();
+};
+
+main().catch((e) => {
+  throw e;
+});
 
 app.get("/", (_, res) => {
   res.send("Welcome to the artificium api.");
@@ -44,7 +57,23 @@ io.on("connection", (socket: Socket) => {
   // Kullanıcının bir odaya mesaj göndermesi için socket oluştur
   socket.on("send-message", (roomId, message) => {
     io.to(roomId).emit("message", message);
-    console.log("a user sent message to room: " + roomId + " message: " + message);
+    console.log(
+      "a user sent message to room: " + roomId + " message: " + message.content
+    );
+
+    const ats_regex = message.content.match(/@(\w+)/g);
+    if (ats_regex) {
+      ats_regex.forEach(async (at: string) => {
+        const username = at.slice(1);
+        const user = await prisma.user.findUnique({
+          where: {
+            firstName: username,
+          },
+        });
+
+        console.log(user); // Kullanıcıyı bulduğunuzda kullanıcıyı konsola yazdırın
+      });
+    }
   });
 });
 

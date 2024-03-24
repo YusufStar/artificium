@@ -14,7 +14,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CogIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { createClient } from "@supabase/supabase-js";
 import useAuthStore from "@/zustand/useAuthStore";
 import axios from "axios";
 import { turkishToEnglish } from "@/lib/utils";
