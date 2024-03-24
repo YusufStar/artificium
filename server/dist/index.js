@@ -18,6 +18,8 @@ const socket_io_1 = require("socket.io");
 const dotenv_1 = require("dotenv");
 const morgan_1 = __importDefault(require("morgan"));
 const client_1 = require("@prisma/client");
+const pino_1 = __importDefault(require("pino"));
+const loger = (0, pino_1.default)();
 const app = (0, express_1.default)();
 const server = http_1.default.createServer(app); // Express uygulamanızı HTTP sunucusuna dönüştürün
 const prisma = new client_1.PrismaClient();
@@ -37,29 +39,31 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
 main().catch((e) => {
     throw e;
 });
-app.get("/", (_, res) => {
-    res.send("Welcome to the artificium api.");
-});
 // Socket.IO bağlantılarını dinleyin
 io.on("connection", (socket) => {
-    console.log("a user connected id: " + socket.id);
+    loger.info("a user connected id: " + socket.id);
     // Kullanıcı bağlantısını kesin
     socket.on("disconnect", () => {
-        console.log("user disconnected id: " + socket.id);
+        loger.info("a user disconnected id: " + socket.id);
     });
     // Kullanıcınin bir odaya katilmasi icin socket olustur
     socket.on("join-room", (roomId, userId) => {
         socket.join(roomId);
-        console.log("a user joined room: " + roomId + " user id: " + userId);
+        loger.info("a user joined room: " + roomId + " user id: " + userId);
     });
     // Kullanıcının bir odadan ayrılması için socket oluştur
     socket.on("leave-room", (roomId, userId) => {
         socket.leave(roomId);
-        console.log("a user left room: " + roomId + " user id: " + userId);
+        loger.info("a user left room: " + roomId + " user id: " + userId);
     });
     // Kullanıcının bir odaya mesaj göndermesi için socket oluştur
     socket.on("send-message", (roomId, message) => {
         io.to(roomId).emit("message", message);
+        loger.info("a user sent message to room: " + roomId, {
+            message: message.content,
+            firstName: message.author.firstName,
+            lastName: message.author.lastName,
+        });
         const ats_regex = message.content.match(/@(\w+)/g);
         if (ats_regex) {
             ats_regex.forEach((at) => __awaiter(void 0, void 0, void 0, function* () {
@@ -93,6 +97,11 @@ io.on("connection", (socket) => {
                         },
                     });
                     io.to(roomId).emit("message", response);
+                    loger.info("artificium replied to user: ", {
+                        message: response.content,
+                        firstName: response.author.firstName,
+                        lastName: response.author.lastName,
+                    });
                 }
             }));
         }
@@ -101,5 +110,5 @@ io.on("connection", (socket) => {
 // Set up the Express application to listen on port 3000
 const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    loger.info(`Server is running on port ${PORT}`);
 });

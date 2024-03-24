@@ -4,6 +4,8 @@ import { Server, Socket } from "socket.io";
 import { config } from "dotenv";
 import morgan from "morgan";
 import { PrismaClient } from "@prisma/client";
+import pino from "pino";
+const loger = pino();
 
 const app = express();
 const server = http.createServer(app); // Express uygulamanızı HTTP sunucusuna dönüştürün
@@ -29,34 +31,35 @@ main().catch((e) => {
   throw e;
 });
 
-app.get("/", (_, res) => {
-  res.send("Welcome to the artificium api.");
-});
-
 // Socket.IO bağlantılarını dinleyin
 io.on("connection", (socket: Socket) => {
-  console.log("a user connected id: " + socket.id);
+  loger.info("a user connected id: " + socket.id);
 
   // Kullanıcı bağlantısını kesin
   socket.on("disconnect", () => {
-    console.log("user disconnected id: " + socket.id);
+    loger.info("a user disconnected id: " + socket.id);
   });
 
   // Kullanıcınin bir odaya katilmasi icin socket olustur
   socket.on("join-room", (roomId, userId) => {
     socket.join(roomId);
-    console.log("a user joined room: " + roomId + " user id: " + userId);
+    loger.info("a user joined room: " + roomId + " user id: " + userId);
   });
 
   // Kullanıcının bir odadan ayrılması için socket oluştur
   socket.on("leave-room", (roomId, userId) => {
     socket.leave(roomId);
-    console.log("a user left room: " + roomId + " user id: " + userId);
+    loger.info("a user left room: " + roomId + " user id: " + userId);
   });
 
   // Kullanıcının bir odaya mesaj göndermesi için socket oluştur
   socket.on("send-message", (roomId, message) => {
     io.to(roomId).emit("message", message);
+    loger.info("a user sent message to room: " + roomId, {
+      message: message.content,
+      firstName: message.author.firstName,
+      lastName: message.author.lastName,
+    });
 
     const ats_regex = message.content.match(/@(\w+)/g);
     if (ats_regex) {
@@ -93,6 +96,11 @@ io.on("connection", (socket: Socket) => {
           });
 
           io.to(roomId).emit("message", response);
+          loger.info("artificium replied to user: ", {
+            message: response.content,
+            firstName: response.author.firstName,
+            lastName: response.author.lastName,
+          });
         }
       });
     }
@@ -102,5 +110,5 @@ io.on("connection", (socket: Socket) => {
 // Set up the Express application to listen on port 3000
 const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  loger.info(`Server is running on port ${PORT}`);
 });
