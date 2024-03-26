@@ -19,7 +19,12 @@ const dotenv_1 = require("dotenv");
 const morgan_1 = __importDefault(require("morgan"));
 const client_1 = require("@prisma/client");
 const pino_1 = __importDefault(require("pino"));
+const openai_1 = __importDefault(require("openai"));
+(0, dotenv_1.config)();
 const loger = (0, pino_1.default)();
+const openai = new openai_1.default({
+    apiKey: process.env.OPENAI_SECRET_KEY,
+});
 const app = (0, express_1.default)();
 const server = http_1.default.createServer(app); // Express uygulamanızı HTTP sunucusuna dönüştürün
 const prisma = new client_1.PrismaClient();
@@ -28,7 +33,6 @@ const io = new socket_io_1.Server(server, {
         origin: "*",
     },
 }); // Socket.IO sunucusunu oluşturun
-(0, dotenv_1.config)();
 app.use(express_1.default.json());
 app.use((0, morgan_1.default)("combined"));
 app.use(express_1.default.urlencoded({ extended: false }));
@@ -75,12 +79,22 @@ io.on("connection", (socket) => {
                             firstName: username.toLowerCase(),
                         },
                     });
+                    const completion = yield openai.chat.completions.create({
+                        messages: [
+                            {
+                                role: "system",
+                                content: "You are a helpful assistant. I am a user. you name is artificium. I am asking for help.",
+                            },
+                            {
+                                role: "user",
+                                content: message.content,
+                            },
+                        ],
+                        model: "gpt-4-turbo-preview",
+                    });
                     const response = yield prisma.message.create({
                         data: {
-                            content: "@" +
-                                ((_a = message === null || message === void 0 ? void 0 : message.author) === null || _a === void 0 ? void 0 : _a.firstName) +
-                                " " +
-                                "Merhaba ben artificium!",
+                            content: "@" + ((_a = message === null || message === void 0 ? void 0 : message.author) === null || _a === void 0 ? void 0 : _a.firstName) + " " + completion.choices[0].message.content,
                             author: {
                                 connect: {
                                     id: user === null || user === void 0 ? void 0 : user.id,

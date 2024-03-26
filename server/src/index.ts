@@ -5,7 +5,14 @@ import { config } from "dotenv";
 import morgan from "morgan";
 import { PrismaClient } from "@prisma/client";
 import pino from "pino";
+import OpenAI from "openai";
+
+config();
+
 const loger = pino();
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_SECRET_KEY,
+});
 
 const app = express();
 const server = http.createServer(app); // Express uygulamanızı HTTP sunucusuna dönüştürün
@@ -15,8 +22,6 @@ const io = new Server(server, {
     origin: "*",
   },
 }); // Socket.IO sunucusunu oluşturun
-
-config();
 
 app.use(express.json());
 app.use(morgan("combined"));
@@ -75,13 +80,25 @@ io.on("connection", (socket: Socket) => {
             },
           });
 
+          const completion = await openai.chat.completions.create({
+            messages: [
+              {
+                role: "system",
+                content:
+                  "You are a helpful assistant. I am a user. you name is artificium. I am asking for help.",
+              },
+              {
+                role: "user",
+                content: message.content,
+              },
+            ],
+            model: "gpt-4-turbo-preview",
+          });
+
           const response = await prisma.message.create({
             data: {
               content:
-                "@" +
-                message?.author?.firstName +
-                " " +
-                "Merhaba ben artificium!",
+                "@" + message?.author?.firstName + " " + completion.choices[0].message.content,
               author: {
                 connect: {
                   id: user?.id,
