@@ -29,6 +29,7 @@ const AuthContainer = ({ children }: { children: React.ReactNode }) => {
         if (data.action === "success") {
           if (!user) {
             toast.success(data.message);
+            replace("/login");
           }
           login(data.user);
         }
@@ -44,9 +45,7 @@ const AuthContainer = ({ children }: { children: React.ReactNode }) => {
 
         if (data.action === "auth") {
           logout();
-          if (pathname !== "/login" && pathname !== "/register") {
-            replace("/login");
-          }
+          replace("/login");
         }
       } catch (error) {
         setLoading(false);
