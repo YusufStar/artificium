@@ -23,7 +23,7 @@ const openai_1 = __importDefault(require("openai"));
 (0, dotenv_1.config)();
 const loger = (0, pino_1.default)();
 const openai = new openai_1.default({
-    apiKey: process.env.OPENAI_SECRET_KEY,
+    apiKey: "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",
 });
 const app = (0, express_1.default)();
 const server = http_1.default.createServer(app); // Express uygulamanızı HTTP sunucusuna dönüştürün
